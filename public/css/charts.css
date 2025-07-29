@@ -1,0 +1,117 @@
+/* public/css/charts.css */
+
+/* Define theme-specific chart colors using CSS variables */
+:root {
+    /* Light Theme Chart Colors */
+    --chart-light-new-bg: #E2E8F0;
+    --chart-light-new-border: #CBD5E0;
+    --chart-light-learning1-bg: #90CDF4;
+    --chart-light-learning1-border: #4A5568;
+    --chart-light-learning2-bg: #63B3ED;
+    --chart-light-learning2-border: #2C5282;
+    --chart-light-learning3-bg: #4299E1;
+    --chart-light-learning3-border: #2A4365;
+    --chart-light-reviewing-bg: #F6E05E; /* Light Yellow */
+    --chart-light-reviewing-border: #B7791F;
+    --chart-light-mastered-bg: #68D391; /* Light Green */
+    --chart-light-mastered-border: #2F855A;
+
+    /* Dark Theme Chart Colors */
+    --chart-dark-new-bg: #4A5568;
+    --chart-dark-new-border: #2D3748;
+    --chart-dark-learning1-bg: #4299E1; /* A bit brighter blue for dark */
+    --chart-dark-learning1-border: #2C5282;
+    --chart-dark-learning2-bg: #3182CE;
+    --chart-dark-learning2-border: #2A4365;
+    --chart-dark-learning3-bg: #2B6CB0;
+    --chart-dark-learning3-border: #1A365D;
+    --chart-dark-reviewing-bg: #D69E2E; /* Darker Amber */
+    --chart-dark-reviewing-border: #975A16;
+    --chart-dark-mastered-bg: #38A169; /* Darker Green */
+    --chart-dark-mastered-border: #276749;
+}
+
+
+.stat-card.chart-card {
+    background-color: var(--card-background-color); /* Already styled */
+    padding: 25px; /* Slightly more padding for chart card */
+    border-radius: 12px; /* Match other cards */
+    box-shadow: 0 6px 18px var(--shadow-color); /* Slightly more pronounced shadow */
+    position: relative; /* For absolute positioning of loading/error messages */
+    min-height: 350px; /* Ensure space for chart and legend */
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-card.chart-card h3 {
+    font-size: 1.4em; /* Larger title for chart card */
+    color: var(--primary-color);
+    margin-bottom: 20px; /* More space below title */
+    text-align: center;
+}
+.stat-card.chart-card h3 i {
+    color: var(--accent-color); /* Use accent for chart icon */
+}
+
+#masteryChart { /* ID of your canvas */
+    max-height: 320px; /* Adjust based on your preference and card size */
+    width: 100% !important;
+    margin: 0 auto; /* Center canvas if it's smaller than container */
+    display: block;
+}
+
+.chart-error-message {
+    text-align: center;
+    color: var(--error-color);
+    font-size: 1em;
+    padding: 20px;
+    width: 100%;
+}
+
+/* Styling for Chart.js Legend (if defaults are not enough) */
+.chartjs-legend {
+    /* Chart.js usually handles legend styling well via options object.
+       This is a fallback or for very specific overrides. */
+}
+.chartjs-legend ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+}
+.chartjs-legend li {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 5px 10px;
+    font-size: 0.9em;
+}
+.chartjs-legend li span { /* The colored box */
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+/* Styling for Chart.js Tooltip (if defaults are not enough via options) */
+canvasjs-chart-tooltip { /* This is for CanvasJS, Chart.js uses its own internal styling */
+    /* Chart.js tooltip styling is best handled via the 'options.plugins.tooltip' object */
+}
+.chartjs-tooltip { /* Default class Chart.js v2 might add, v3+ mostly internal or via options */
+   /* Example:
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+    font-family: var(--font-primary) !important;
+   */
+}
+
+/* Make Chart responsive and respect container */
+.chart-container { /* If you wrap your canvas in a div */
+    position: relative;
+    margin: auto;
+    height: 80%; /* Or a fixed height */
+    width: 90%;  /* Or a fixed width */
+    flex-grow: 1; /* Allow chart to take available vertical space */
+}

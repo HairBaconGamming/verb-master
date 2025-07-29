@@ -1,0 +1,2717 @@
+/* public/style.css */
+:root {
+  --primary-color: #3a7ca5; /* Deeper Blue for Academia */
+  --rgb-primary-color: 58, 124, 165;
+  --secondary-color: #00a896; /* Teal for engagement */
+  --rgb-secondary-color: 0, 168, 150;
+  --accent-color: #f9a825; /* Yellow/Gold for highlights */
+  --rgb-accent-color: 249, 168, 37;
+  --light-accent-color: #ffd54f;
+  --background-color: #f4f7f9; /* Very light grey-blue */
+  --card-background-color: #ffffff;
+  --text-color: #34495e; /* Dark Grey Blue */
+  --light-text-color: #7f8c8d; /* Lighter Grey */
+  --border-color: #dde2e7;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --success-color: #2ecc71;
+  --rgb-success-color: 46, 204, 113;
+  --error-color: #e74c3c;
+  --rgb-error-color: 231, 76, 60;
+  --font-primary: "Poppins", sans-serif;
+  --font-secondary: "Roboto Slab", serif; /* For headings or specific elements */
+
+  --sidebar-width: 260px;
+  --header-height: 70px;
+
+  --chart-light-new-bg: #e2e8f0; /* Xám rất nhạt - Mới */
+  --chart-light-learning1-bg: #90cdf4; /* Xanh dương nhạt - Học L1 */
+  --chart-light-learning2-bg: #63b3ed; /* Xanh dương vừa - Học L2 */
+  --chart-light-learning3-bg: #4299e1; /* Xanh dương đậm hơn - Học L3 */
+  --chart-light-reviewing-bg: #f6e05e; /* Vàng nhạt - Ôn Tập */
+  --chart-light-text-color: #68d391;
+  --chart-light-mastered-bg: #68d391;
+
+  --chart-dark-new-bg: #4a5568; /* Xám đậm - Mới */
+  --chart-dark-learning1-bg: #4299e1; /* Xanh dương sáng (nhưng không quá chói) - Học L1 */
+  --chart-dark-learning2-bg: #3182ce; /* Xanh dương vừa - Học L2 */
+  --chart-dark-learning3-bg: #2b6cb0; /* Xanh dương đậm - Học L3 */
+  --chart-dark-reviewing-bg: #d69e2e; /* Vàng cam đậm - Ôn Tập */
+  --chart-dark-mastered-bg: #38a169; /* Xanh lá đậm - Thành Thạo */
+  --chart-dark-text-color: #c9d1d9;
+}
+
+[data-theme="dark"] {
+  --primary-color: #58a6ff; /* Lighter Blue for Dark Mode */
+  --secondary-color: #39d3bb; /* Lighter Teal */
+  --accent-color: #f1c40f;
+  --light-accent-color: #f7dc6f;
+  --rgb-light-accent-color: 251, 192, 45;
+  --background-color: #0d1117; /* GitHub Dark Background */
+  --card-background-color: #161b22; /* GitHub Dark Card */
+  --text-color: #c9d1d9; /* GitHub Dark Text */
+  --light-text-color: #8b949e;
+  --border-color: #30363d;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --success-color: #34d399;
+  --error-color: #f87171;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  display: flex;
+  min-height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.main-container {
+  display: flex;
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Prevent body scroll, handle scroll within content-area */
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--card-background-color);
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border-color);
+  box-shadow: 2px 0 10px var(--shadow-color);
+  transition: background-color 0.3s, border-color 0.3s;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-secondary);
+  font-size: 1.8em;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  padding-left: 5px;
+}
+.logo i {
+  margin-right: 12px;
+  font-size: 1.2em;
+}
+
+.navigation-menu {
+  flex-grow: 1;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  background-color: transparent;
+  color: var(--text-color);
+  border: none;
+  border-radius: 8px;
+  text-align: left;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+  position: relative;
+}
+.nav-btn i {
+  margin-right: 15px;
+  width: 20px; /* Ensure icons align */
+  text-align: center;
+  color: var(--light-text-color);
+  transition: color 0.2s ease;
+}
+.nav-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+  transform: translateX(5px);
+}
+.nav-btn:hover i {
+  color: white;
+}
+.nav-btn.active-nav-btn {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+}
+.nav-btn.active-nav-btn i {
+  color: white;
+}
+
+.nav-btn::after {
+  /* Tooltip styling */
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 105%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  z-index: 101;
+}
+.nav-btn:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.data-controls-sidebar {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+.data-controls-sidebar h3 {
+  font-size: 0.9em;
+  color: var(--light-text-color);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+.data-controls-sidebar h3 i {
+  margin-right: 8px;
+}
+.data-controls-sidebar button {
+  width: 100%;
+  padding: 9px 12px;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.data-controls-sidebar button i {
+  margin-right: 8px;
+}
+.data-controls-sidebar button:hover {
+  background-color: var(--secondary-color);
+  color: white;
+  border-color: var(--secondary-color);
+}
+.data-controls-sidebar button.danger-btn:hover {
+  background-color: var(--error-color);
+  border-color: var(--error-color);
+  color: white;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color);
+}
+.theme-toggle i {
+  font-size: 1.1em;
+  color: var(--light-text-color);
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px; /* Increased width */
+  height: 26px; /* Increased height */
+  margin: 0 10px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 26px; /* Match height */
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px; /* Adjusted size */
+  width: 20px; /* Adjusted size */
+  left: 3px; /* Adjusted position */
+  bottom: 3px; /* Adjusted position */
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+input:checked + .slider:before {
+  transform: translateX(24px); /* Adjusted transform */
+}
+
+/* Main Content Area Styling */
+.content-area {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  overflow-y: auto; /* Allow scrolling within main content only */
+}
+
+.main-header {
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  background-color: var(--card-background-color);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0; /* Prevent header from shrinking */
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.main-header h1 {
+  font-size: 1.6em;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.progress-summary-header {
+  display: flex;
+  gap: 20px;
+}
+.progress-summary-header div {
+  font-size: 0.9em;
+  color: var(--light-text-color);
+}
+.progress-summary-header span {
+  font-weight: 600;
+  color: var(--text-color);
+  margin-right: 5px;
+  background-color: var(--background-color);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+[data-theme="dark"] .progress-summary-header span {
+  background-color: var(--border-color);
+}
+
+.app-content-view {
+  flex-grow: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center content by default */
+}
+.welcome-message {
+  text-align: center;
+  max-width: 600px;
+}
+.welcome-img {
+  max-width: 250px;
+  margin-bottom: 20px;
+}
+.welcome-message h2 {
+  font-family: var(--font-secondary);
+  font-size: 2em;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+.welcome-message p {
+  font-size: 1.1em;
+  color: var(--light-text-color);
+  line-height: 1.7;
+}
+
+/* Flashcard Specific Styling */
+.flashcard-container {
+  perspective: 1200px;
+  width: 100%;
+  max-width: 480px;
+  min-height: 250px;
+  margin: 20px auto; /* Center and add margin */
+}
+.flashcard {
+  width: 100%;
+  height: 250px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px var(--shadow-color);
+}
+.flashcard.flipped {
+  transform: rotateY(180deg);
+}
+.flashcard .front,
+.flashcard .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column; /* Allow for smaller text below if needed */
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  font-size: 1.6em; /* Larger text for flashcards */
+  text-align: center;
+  font-weight: 500;
+}
+.flashcard .front {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  color: white;
+}
+.flashcard .back {
+  background: var(--card-background-color);
+  color: var(--primary-color);
+  transform: rotateY(180deg);
+  border: 2px solid var(--primary-color);
+}
+.flashcard-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* Question Area (Quiz, Type-in) */
+.question-area,
+.type-question {
+  width: 100%;
+  max-width: 650px;
+  background-color: var(--card-background-color);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  text-align: center; /* Center question text */
+  margin: 20px auto;
+}
+.question-area p,
+.type-question p {
+  /* Question text */
+  font-size: 1.4em;
+  margin-bottom: 25px;
+  color: var(--text-color);
+  font-weight: 500;
+  line-height: 1.5;
+}
+.question-area p strong,
+.type-question p strong {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.options-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 15px; /* Grid gap for options */
+}
+/* For 2x2 layout for 4 options */
+@media (min-width: 500px) {
+  .options-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.options-list li {
+  background: var(--background-color);
+  padding: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+  border: 1px solid var(--border-color);
+  font-size: 1.05em;
+  color: var(--text-color);
+}
+.options-list li:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+}
+.options-list li.correct {
+  background-color: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+  color: white !important;
+  font-weight: 600;
+}
+.options-list li.incorrect {
+  background-color: var(--error-color) !important;
+  border-color: var(--error-color) !important;
+  color: white !important;
+}
+.options-list li.disabled {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+#type-ans-in,
+#sl-type-input,
+#test-type-in {
+  padding: 15px;
+  font-size: 1.1em;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto 20px auto; /* Center input */
+  display: block; /* Make it block to use auto margins */
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+#type-ans-in:focus,
+#sl-type-input:focus,
+#test-type-in:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px_rgba (58, 124, 165, 0.25); /* Primary color with alpha */
+  outline: none;
+}
+
+/* Buttons (General Action Buttons) */
+.primary-btn,
+.secondary-btn,
+.action-button {
+  padding: 12px 25px;
+  font-size: 1em;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  border: none;
+  display: inline-flex; /* For icon alignment */
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  gap: 8px; /* Space between icon and text */
+}
+.primary-btn,
+.action-button[id*="submit"],
+.action-button[id*="check"] {
+  background-color: var(--primary-color);
+  color: white;
+}
+.primary-btn:hover,
+.action-button[id*="submit"]:hover,
+.action-button[id*="check"]:hover {
+  background-color: color-mix(in srgb, var(--primary-color) 85%, black);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.secondary-btn,
+.action-button[id*="next"],
+.action-button[id*="reveal"] {
+  background-color: var(--secondary-color);
+  color: white;
+}
+.secondary-btn:hover,
+.action-button[id*="next"]:hover,
+.action-button[id*="reveal"]:hover {
+  background-color: color-mix(in srgb, var(--secondary-color) 85%, black);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+/* Mark correct/incorrect buttons */
+#markCorrectBtn,
+#smart-fc-correct {
+  background-color: var(--success-color);
+}
+#markCorrectBtn:hover,
+#smart-fc-correct:hover {
+  background-color: color-mix(in srgb, var(--success-color) 85%, black);
+}
+#markIncorrectBtn,
+#smart-fc-incorrect {
+  background-color: var(--error-color);
+}
+#markIncorrectBtn:hover,
+#smart-fc-incorrect:hover {
+  background-color: color-mix(in srgb, var(--error-color) 85%, black);
+}
+
+button:disabled,
+.action-button:disabled {
+  background-color: #b0bec5 !important; /* Material Grey 300 */
+  color: #78909c !important; /* Material Grey 500 */
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Footer Area */
+.main-footer {
+  height: var(--header-height); /* Same as header */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  background-color: var(--card-background-color);
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0; /* Prevent footer from shrinking */
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.feedback-area-footer {
+  font-weight: 500;
+  font-size: 1em;
+  flex-grow: 1;
+  text-align: center;
+}
+.feedback-area-footer.correct {
+  color: var(--success-color);
+}
+.feedback-area-footer.incorrect {
+  color: var(--error-color);
+}
+
+.navigation-controls-footer {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.navigation-controls-footer button {
+  padding: 10px 15px; /* Smaller padding for nav buttons */
+}
+.card-number-display {
+  font-size: 0.95em;
+  color: var(--light-text-color);
+  font-weight: 500;
+  min-width: 70px;
+  text-align: center;
+}
+.score-area-footer {
+  font-size: 1.05em;
+  font-weight: 600;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+}
+.score-area-footer i {
+  margin-right: 8px;
+  color: var(--accent-color);
+}
+
+/* Modal Styling (Test Settings - và có thể dùng chung cho các modal cài đặt khác) */
+.modal {
+  position: fixed;
+  z-index: 1000; /* Đảm bảo modal ở trên cùng */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65); /* Nền mờ đậm hơn một chút */
+  display: flex; /* Sử dụng flex để căn giữa modal-content */
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* Transition cho opacity */
+}
+
+.modal.show-modal {
+  /* Class được thêm bằng JS để hiển thị modal */
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s linear 0s;
+}
+
+.modal-content.stylish-modal {
+  background-color: var(--card-background-color);
+  color: var(--text-color);
+  padding: 25px 30px 30px 30px; /* Tăng padding dưới */
+  border-radius: 12px; /* Bo góc mềm mại hơn */
+  width: 90%;
+  max-width: 520px; /* Giới hạn chiều rộng tối đa */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Shadow rõ hơn */
+  position: relative;
+  text-align: left;
+  transform: scale(0.9) translateY(-20px); /* Hiệu ứng xuất hiện ban đầu */
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease;
+  opacity: 0; /* Ẩn ban đầu cho transition */
+}
+
+.modal.show-modal .modal-content.stylish-modal {
+  transform: scale(1) translateY(0); /* Hiệu ứng khi modal hiển thị */
+  opacity: 1;
+}
+
+.stylish-modal h2 {
+  font-family: var(--font-secondary);
+  color: var(--primary-color);
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 1.7em; /* Kích thước tiêu đề */
+  font-weight: 700;
+}
+.stylish-modal h2 i {
+  margin-right: 10px;
+  vertical-align: middle; /* Căn icon với text */
+}
+
+.stylish-modal .form-group {
+  margin-bottom: 22px; /* Khoảng cách giữa các group */
+}
+.stylish-modal .form-group:last-of-type {
+  /* Không có margin dưới cho group cuối cùng trước nút */
+  margin-bottom: 28px;
+}
+
+.stylish-modal label, /* Áp dụng cho label của input number */
+.stylish-modal .form-group > p {
+  /* Áp dụng cho paragraph chứa tiêu đề của nhóm checkbox */
+  display: block;
+  margin-bottom: 10px; /* Khoảng cách với input/checkbox group */
+  font-weight: 600; /* Chữ đậm hơn */
+  color: var(--text-color);
+  font-size: 1.05em; /* Kích thước chữ lớn hơn một chút */
+}
+.stylish-modal label i,
+.stylish-modal .form-group > p i {
+  margin-right: 8px;
+  color: var(--secondary-color); /* Màu khác cho icon trong label */
+  width: 20px; /* Đảm bảo icon thẳng hàng */
+  text-align: center;
+}
+
+.stylish-modal input[type="number"] {
+  padding: 12px 15px; /* Padding lớn hơn */
+  border-radius: 8px; /* Bo góc nhiều hơn */
+  border: 1px solid var(--border-color);
+  width: 90px; /* Rộng hơn một chút */
+  font-size: 1em;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.stylish-modal input[type="number"]:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(58, 124, 165, 0.25); /* Primary color với alpha */
+  outline: none;
+}
+
+.stylish-modal .checkbox-label {
+  display: flex;
+  align-items: center;
+  padding: 10px 5px; /* Padding cho mỗi checkbox label */
+  font-weight: 500; /* Chữ thường hơn label của group */
+  color: var(--text-color);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+  margin-bottom: 5px; /* Khoảng cách giữa các checkbox */
+}
+.stylish-modal .checkbox-label:hover {
+  background-color: var(--background-color);
+}
+[data-theme="dark"] .stylish-modal .checkbox-label:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.stylish-modal .checkbox-label input[type="checkbox"] {
+  margin-right: 12px;
+  height: 20px; /* Checkbox lớn hơn */
+  width: 20px;
+  accent-color: var(--primary-color); /* Màu khi checkbox được chọn */
+  cursor: pointer;
+  flex-shrink: 0; /* Ngăn checkbox bị co lại */
+}
+.stylish-modal .checkbox-label i {
+  margin-right: 8px;
+  color: var(--light-text-color); /* Màu icon trong checkbox label */
+  width: 18px;
+  text-align: center;
+}
+
+.stylish-modal .form-text.text-muted {
+  /* Text chú thích nhỏ */
+  display: block;
+  font-size: 0.85em;
+  color: var(--light-text-color);
+  margin-top: 6px;
+  padding-left: 5px; /* Căn với text của label */
+}
+
+.stylish-modal .modal-action-btn {
+  /* Nút "Bắt Đầu Kiểm Tra" */
+  display: block;
+  width: 100%;
+  padding: 14px;
+  font-size: 1.15em; /* Chữ to hơn cho nút chính */
+  margin-top: 15px; /* Khoảng cách với group cuối */
+  font-weight: 600;
+}
+
+.stylish-modal .close-btn {
+  background: none;
+  border: none;
+  color: var(--light-text-color);
+  font-size: 2.2em; /* Nút đóng to hơn */
+  font-weight: 300; /* Nét mảnh cho dấu X */
+  position: absolute;
+  top: 12px; /* Điều chỉnh vị trí nút đóng */
+  right: 15px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 5px; /* Tăng vùng click */
+  transition: color 0.2s, transform 0.2s;
+}
+.stylish-modal .close-btn:hover {
+  color: var(--error-color); /* Màu đỏ khi hover nút đóng */
+  transform: rotate(90deg); /* Hiệu ứng xoay nhẹ */
+}
+
+/* Test Results Area */
+.test-results-container {
+  /* New wrapper for test results */
+  width: 100%;
+  max-width: 700px;
+  background-color: var(--card-background-color);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  margin: 20px auto;
+}
+.test-results-container h2 {
+  font-family: var(--font-secondary);
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 2em;
+}
+.test-results-container > p {
+  /* Overall score paragraph */
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+.test-results-summary {
+  list-style-type: none;
+  padding: 0;
+}
+.test-results-summary li {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 1em;
+}
+.test-results-summary li:last-child {
+  border-bottom: none;
+}
+.test-results-summary li strong {
+  /* Question term */
+  color: var(--text-color);
+  font-weight: 600;
+}
+.test-results-summary .user-answer {
+  display: inline-block; /* For styling */
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-left: 5px;
+}
+.test-results-summary .user-answer.correct {
+  background-color: #dff0d8; /* Light green */
+  color: #3c763d; /* Dark green */
+  border: 1px solid #d6e9c6;
+}
+.test-results-summary .user-answer.incorrect {
+  background-color: #f2dede; /* Light red */
+  color: #a94442; /* Dark red */
+  border: 1px solid #ebccd1;
+}
+[data-theme="dark"] .test-results-summary .user-answer.correct {
+  background-color: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+  border-color: #2ecc71;
+}
+[data-theme="dark"] .test-results-summary .user-answer.incorrect {
+  background-color: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+.test-results-summary .correct-answer-text {
+  font-style: italic;
+  color: var(--light-text-color);
+  font-size: 0.95em;
+  margin-left: 10px;
+}
+.test-results-container .primary-btn {
+  /* Button at the end of results */
+  display: block;
+  width: fit-content;
+  margin: 25px auto 0 auto;
+}
+
+/* Animations for engagement */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.question-area,
+.type-question,
+.flashcard-container,
+.test-results-container,
+.welcome-message {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.brand-highlight {
+  color: var(
+    --secondary-color
+  ); /* Hoặc var(--accent-color) nếu bạn muốn màu vàng/gold */
+  font-weight: 700; /* Làm cho nó nổi bật hơn một chút */
+  /* Bạn có thể thêm một hiệu ứng text-shadow nhẹ nếu muốn */
+  /* text-shadow: 1px 1px 2px rgba(0,0,0,0.1); */
+}
+
+/* Đảm bảo rằng khi ở dark mode, màu này vẫn nổi bật */
+[data-theme="dark"] .brand-highlight {
+  color: var(--secondary-color); /* Teal sáng hơn trong dark mode vẫn tốt */
+  /* Hoặc có thể là một màu accent sáng hơn */
+  /* color: var(--light-accent-color); */
+}
+
+/* Advanced Stats Page Styling */
+.advanced-stats-container {
+  width: 100%;
+  max-width: 900px; /* Wider for more content */
+  margin: 0 auto; /* Center it */
+  padding: 20px; /* Add some padding */
+}
+
+.advanced-stats-container h2 {
+  font-family: var(--font-secondary);
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.2em;
+}
+.advanced-stats-container h2 i {
+  margin-right: 12px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background-color: var(--card-background-color);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px var(--shadow-color);
+}
+
+.stat-card h3 {
+  font-size: 1.25em;
+  color: var(--primary-color);
+  margin-top: 0;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+.stat-card h3 i {
+  margin-right: 10px;
+  color: var(--secondary-color);
+}
+
+.stat-card p {
+  font-size: 1em;
+  color: var(--text-color);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.stat-card p strong {
+  font-weight: 600;
+  color: var(--text-color);
+}
+[data-theme="dark"] .stat-card p strong {
+  color: var(--primary-color); /* Make strong text more visible in dark mode */
+}
+
+.stat-card.main-stat .progress-bar-container {
+  width: 100%;
+  background-color: var(--background-color);
+  border-radius: 8px;
+  height: 28px; /* Taller progress bar */
+  margin-bottom: 10px;
+  overflow: hidden; /* Ensure inner bar respects radius */
+  position: relative;
+}
+.stat-card.main-stat .progress-bar {
+  width: 0%; /* Initial width, set by JS */
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--secondary-color),
+    var(--primary-color)
+  );
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9em;
+  transition: width 0.8s ease-out;
+}
+.stat-card.main-stat .progress-bar::after {
+  content: attr(data-label); /* Show percentage */
+}
+
+.stat-card .action-button.small-btn {
+  padding: 8px 15px;
+  font-size: 0.9em;
+  margin-top: 10px;
+}
+
+.stat-card.list-card ul {
+  list-style: none;
+  padding: 0;
+  max-height: 200px; /* Limit height and allow scroll if needed */
+  overflow-y: auto;
+}
+.stat-card.list-card li {
+  padding: 8px 5px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95em;
+}
+.stat-card.list-card li:last-child {
+  border-bottom: none;
+}
+.count-badge {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px; /* Pill shape */
+  font-size: 0.8em;
+  font-weight: 500;
+}
+.count-badge.error-badge {
+  background-color: var(--error-color);
+}
+
+.stat-card.chart-card {
+  padding-bottom: 25px; /* More space for legend */
+  grid-column: 1 / -1; /* Make chart card span full width if it's the only one in a row or for better layout */
+  max-width: 600px; /* Control chart size */
+  margin-left: auto;
+  margin-right: auto;
+}
+#masteryChart {
+  max-height: 300px; /* Control chart height */
+  width: 100% !important; /* Override default canvas inline styling */
+}
+
+/* Utility to attempt equal height cards in a grid row */
+.stats-grid.equal-height-cards {
+  align-items: stretch; /* Make cards in a row stretch to the tallest one */
+}
+.stats-grid.equal-height-cards .stat-card {
+  display: flex;
+  flex-direction: column; /* Allow content within card to manage its height */
+}
+.stats-grid.equal-height-cards .stat-card ul {
+  flex-grow: 1; /* Make ul take available space */
+}
+
+.toast-container {
+  position: fixed; /* Hiển thị cố định trên màn hình */
+  top: 20px; /* Cách lề trên 20px */
+  right: 20px; /* Cách lề phải 20px */
+  z-index: 9999; /* Đảm bảo nổi lên trên tất cả các element khác */
+  display: flex;
+  flex-direction: column; /* Các toast xếp chồng lên nhau theo chiều dọc */
+  gap: 12px; /* Khoảng cách giữa các toast message */
+  max-width: 350px; /* Giới hạn chiều rộng tối đa của container */
+  pointer-events: none; /* Cho phép click xuyên qua container nếu không có toast */
+}
+
+.toast {
+  display: flex;
+  align-items: center; /* Căn giữa icon và text theo chiều dọc */
+  padding: 14px 20px; /* Padding lớn hơn một chút */
+  border-radius: 8px; /* Bo góc mềm mại hơn */
+  color: white; /* Màu chữ mặc định là trắng */
+  font-size: 0.95em; /* Kích thước chữ */
+  font-weight: 500; /* Độ đậm vừa phải */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Shadow rõ ràng hơn */
+  opacity: 0;
+  transform: translateX(110%); /* Bắt đầu từ ngoài màn hình bên phải */
+  transition: opacity 0.4s ease-out,
+    transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  pointer-events: all; /* Toast có thể được tương tác (nếu cần) */
+  min-width: 280px; /* Chiều rộng tối thiểu */
+  word-wrap: break-word; /* Ngăn text quá dài làm vỡ layout */
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(0); /* Di chuyển vào trong màn hình */
+}
+
+.toast i.fas {
+  /* Style cho icon Font Awesome bên trong toast */
+  margin-right: 12px; /* Khoảng cách giữa icon và text */
+  font-size: 1.3em; /* Kích thước icon lớn hơn một chút */
+  flex-shrink: 0; /* Ngăn icon bị co lại */
+}
+
+/* Styling theo loại toast */
+.toast-success {
+  background-color: var(--success-color); /* Sử dụng biến màu success */
+  /* Hoặc một màu gradient nếu muốn
+    background: linear-gradient(135deg, var(--success-color), color-mix(in srgb, var(--success-color) 80%, black));
+    */
+}
+
+.toast-error {
+  background-color: var(--error-color); /* Sử dụng biến màu error */
+  /*
+    background: linear-gradient(135deg, var(--error-color), color-mix(in srgb, var(--error-color) 80%, black));
+    */
+}
+
+.toast-info {
+  background-color: var(--primary-color); /* Sử dụng biến màu primary */
+  /*
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    */
+}
+
+/* Dark theme adjustments cho toast (nếu màu cơ bản không đủ tương phản) */
+[data-theme="dark"] .toast {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Shadow đậm hơn trên nền tối */
+}
+
+[data-theme="dark"] .toast-success {
+  background-color: color-mix(in srgb, var(--success-color) 70%, black);
+}
+[data-theme="dark"] .toast-error {
+  background-color: color-mix(in srgb, var(--error-color) 70%, black);
+}
+[data-theme="dark"] .toast-info {
+  background-color: color-mix(in srgb, var(--primary-color) 70%, black);
+}
+
+.mobile-mode-selection {
+  display: none; /* Mặc định ẩn trên desktop */
+  width: 100%;
+  padding: 15px 0; /* Padding trên dưới */
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.mode-btn-mobile {
+  display: flex;
+  flex-direction: column; /* Icon trên, text dưới */
+  align-items: center;
+  justify-content: center;
+  background-color: var(--card-background-color);
+  color: var(--primary-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 15px 10px;
+  font-size: 0.85em; /* Chữ nhỏ hơn một chút */
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  width: 100%; /* Cho nút chiếm hết chiều rộng của grid cell */
+  min-height: 90px; /* Đảm bảo chiều cao đồng đều */
+}
+.mode-btn-mobile:hover {
+  background-color: var(--background-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+.mode-btn-mobile.active-nav-btn-mobile {
+  /* Class cho nút active trên mobile */
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+.mode-btn-mobile.active-nav-btn-mobile i {
+  color: white;
+}
+.mode-btn-mobile i {
+  font-size: 1.8em; /* Icon to hơn */
+  margin-bottom: 8px;
+  color: var(--secondary-color);
+}
+.mode-btn-mobile span {
+  font-weight: 500;
+}
+
+.mobile-settings-toggle {
+  display: none; /* Ẩn trên desktop */
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 1.6em; /* Kích thước icon bánh răng */
+  cursor: pointer;
+  padding: 8px;
+  margin-left: auto; /* Đẩy sang phải trong flex container (sidebar trên mobile) */
+}
+.mobile-settings-toggle i.fa-times {
+  /* Icon X khi menu mở */
+  color: var(--error-color);
+}
+
+#mode-specific-content {
+  width: 100%;
+  display: flex; /* Sử dụng flex để dễ dàng căn giữa nội dung con */
+  flex-direction: column; /* Nội dung con xếp chồng lên nhau */
+  align-items: center; /* Căn giữa nội dung con theo chiều ngang */
+  padding: 20px 15px; /* Padding chung */
+}
+
+/* Advanced AI Loading Screen - Book Flip Animation */
+.ai-loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 380px; /* Tăng chiều cao để có không gian cho animation và text */
+    padding: 30px;
+    text-align: center;
+    /* background-color: var(--background-color); /* Không cần nếu #mode-specific-content đã có nền */
+    border-radius: 12px;
+}
+
+.ai-loading-animation {
+    margin-bottom: 35px; /* Khoảng cách lớn hơn giữa animation và text */
+}
+
+/* --- BOOK FLIP ANIMATION (REVISED FOR STATIC COVERS) --- */
+.book-spinner {
+    width: 120px; 
+    height: 90px;
+    position: relative;
+    /* perspective: 1500px; -- không cần perspective cho toàn bộ spinner nữa */
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.12));
+}
+[data-theme="dark"] .book-spinner {
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.25));
+}
+
+.book-spinner .page { /* Style chung cho tất cả "trang" */
+    width: 50%; 
+    height: 100%;
+    position: absolute;
+    top: 0;
+    background-color: #fefefe; 
+    border: 1px solid #e8e8e8; 
+    box-sizing: border-box; /* Quan trọng cho width/height/border */
+}
+
+/* Bìa sau cố định (bên trái) */
+.book-spinner .fixed-page.left-cover {
+    left: 0;
+    border-radius: 6px 0 0 6px;
+    background-color: #f0f0f0; /* Màu bìa sau */
+    border-color: #dcdcdc;
+    z-index: 1; /* Luôn ở dưới cùng */
+    box-shadow: inset 2px 0px 4px rgba(0,0,0,0.05); /* Shadow gáy */
+}
+[data-theme="dark"] .book-spinner .fixed-page.left-cover {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    box-shadow: inset 2px 0px 4px rgba(0,0,0,0.15);
+}
+
+/* Bìa trước cố định (bên phải, ban đầu hiển thị) */
+.book-spinner .fixed-page.right-cover {
+    right: 0;
+    border-radius: 0 6px 6px 0;
+    background-color: var(--primary-color); /* Màu bìa trước */
+    border-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3; /* Trên trang lật ban đầu, dưới gáy sách */
+}
+.book-spinner .fixed-page.right-cover::before { /* Chữ "VM" trên bìa trước */
+    content: ""; 
+    font-family: var(--font-secondary);
+    font-size: 2.5em; 
+    opacity: 0.8;
+}
+[data-theme="dark"] .book-spinner .fixed-page.right-cover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--card-background-color);
+}
+[data-theme="dark"] .book-spinner .fixed-page.right-cover::before {
+    opacity: 0.9;
+}
+
+
+/* Trang lật ở giữa */
+.book-spinner .flipping-page {
+    left: 50%; /* Bắt đầu ở vị trí gáy, sẽ lật từ đây */
+    transform-origin: left center; /* Lật quanh mép trái của nó */
+    animation-name: flipPageCenter; /* Animation mới */
+    animation-duration: 2.5s; /* Thời gian lật có thể điều chỉnh */
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+    animation-iteration-count: infinite;
+    z-index: 5; /* Quan trọng: Phải cao hơn các trang cố định khi nó đang lật */
+    background-color: #fff; /* Màu trang giấy bình thường */
+    border-radius: 0 6px 6px 0; /* Ban đầu bo góc phải */
+    /* Thêm một chút shadow cho trang lật để tạo chiều sâu */
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+[data-theme="dark"] .book-spinner .flipping-page {
+    background-color: #334155; /* Màu trang giấy tối */
+    border-color: #475569;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+}
+
+
+.book-spinner .book-spine {
+    width: 12px; 
+    height: 102%; 
+    background-color: color-mix(in srgb, var(--primary-color) 60%, black);
+    position: absolute;
+    top: -1%; 
+    left: calc(50% - 6px); 
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    z-index: 4; /* Gáy sách nằm giữa bìa phải và trang lật (khi trang lật ở vị trí 0) */
+                /* Hoặc cao hơn nếu muốn gáy luôn nổi bật */
+}
+[data-theme="dark"] .book-spinner .book-spine {
+    background-color: color-mix(in srgb, var(--primary-color) 60%, black);
+    box-shadow: 0 0 8px rgba(0,0,0,0.4);
+}
+
+@keyframes flipPageCenter {
+    0% { /* Bắt đầu: trang lật nằm bên phải, che bìa phải */
+        transform: perspective(1500px) rotateY(0deg);
+        border-radius: 0 6px 6px 0; /* Bo góc phải */
+        z-index: 5; /* Trên bìa phải */
+    }
+    5% { /* Giữ một chút */
+        transform: perspective(1500px) rotateY(0deg);
+        border-radius: 0 6px 6px 0;
+        z-index: 5;
+    }
+    45% { /* Lật qua gáy sách */
+        transform: perspective(1500px) rotateY(-180deg);
+        border-radius: 6px 0 0 6px; /* Đổi bo góc khi lật sang trái */
+        animation-timing-function: ease-out;
+        z-index: 5; /* Vẫn ở trên khi đang lật */
+    }
+    50% { /* Hoàn thành lật: trang lật nằm bên trái, che bìa trái */
+        transform: perspective(1500px) rotateY(-180deg);
+        border-radius: 6px 0 0 6px;
+        z-index: 5;
+    }
+    /* Giữ ở bên trái một chút */
+    55% {
+        transform: perspective(1500px) rotateY(-180deg);
+        border-radius: 6px 0 0 6px;
+        z-index: 5;
+    }
+    /* Bắt đầu lật ngược lại */
+    95% {
+        transform: perspective(1500px) rotateY(0deg);
+        border-radius: 0 6px 6px 0; /* Đổi lại bo góc khi về phải */
+        animation-timing-function: ease-in;
+        z-index: 5;
+    }
+    100% {
+        transform: perspective(1500px) rotateY(0deg);
+        border-radius: 0 6px 6px 0;
+        z-index: 5;
+    }
+}
+
+
+/* --- TEXT STYLING --- */
+.ai-loading-text {
+    font-size: 1.3em; /* Chữ to hơn */
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px; /* Giãn cách chữ nhẹ */
+}
+[data-theme="dark"] .ai-loading-text {
+    color: var(--primary-color);
+}
+
+.ai-loading-subtext {
+    font-size: 1em; /* Chữ to hơn */
+    color: var(--light-text-color);
+    max-width: 450px;
+    line-height: 1.6; /* Dãn dòng */
+}
+[data-theme="dark"] .ai-loading-subtext {
+    color: var(--light-text-color);
+}
+
+/* Cải thiện style cho AI Practice Mode Cards - Cụ thể là câu hỏi điền từ */
+.ai-practice-card {
+  background-color: var(--card-background-color);
+  border: 1px solid var(--border-color); /* Viền nhẹ hơn mặc định */
+  border-radius: 12px; /* Bo góc nhiều hơn */
+  padding: 25px 30px; /* Tăng padding */
+  margin-bottom: 30px; /* Tăng khoảng cách giữa các card */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07); /* Shadow mềm mại hơn */
+}
+
+/* Đoạn văn ngữ cảnh */
+.ai-practice-card .passage-text {
+  background-color: var(--background-color); /* Nền khác biệt nhẹ */
+  border-left: 4px solid var(--primary-color); /* Viền trái màu primary */
+  padding: 18px 20px;
+  margin-bottom: 25px; /* Khoảng cách lớn hơn với câu hỏi */
+  font-size: 1.05em; /* Chữ to hơn một chút */
+  line-height: 1.75; /* Dãn dòng dễ đọc hơn */
+  color: var(--text-color);
+  border-radius: 8px; /* Bo góc nhẹ */
+}
+[data-theme="dark"] .ai-practice-card .passage-text {
+  background-color: rgba(
+    var(--rgb-primary-color, 88, 166, 255),
+    0.1
+  ); /* Nền xanh nhạt trong dark mode */
+  border-left-color: var(--primary-color);
+}
+
+/* Chỗ trống được highlight trong đoạn văn và câu hỏi */
+.ai-practice-card .blank-marker.highlight {
+  background-color: var(--accent-color);
+  color: black; /* Đảm bảo tương phản trên nền vàng/cam */
+  padding: 2px 8px; /* Padding lớn hơn */
+  border-radius: 5px; /* Bo góc nhiều hơn */
+  font-weight: 600; /* Đậm hơn */
+  font-family: "Courier New", Courier, monospace; /* Font khác biệt cho chỗ trống */
+  display: inline-block; /* Để padding và background hoạt động tốt */
+  margin: 0 2px; /* Khoảng cách nhỏ xung quanh */
+  border: 1px dashed rgba(0, 0, 0, 0.2); /* Viền đứt nhẹ */
+}
+[data-theme="dark"] .ai-practice-card .blank-marker.highlight {
+  background-color: var(
+    --light-accent-color
+  ); /* Màu accent sáng hơn cho dark mode */
+  color: var(--dark-color); /* Chữ tối trên nền sáng */
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Câu hỏi/Prompt chính */
+.ai-practice-card h3.question-prompt {
+  font-size: 1.35em; /* Chữ to và rõ ràng */
+  color: var(--primary-color); /* Màu primary cho câu hỏi */
+  margin-bottom: 20px; /* Khoảng cách với input/options */
+  font-weight: 600; /* Đậm hơn */
+  line-height: 1.5;
+}
+[data-theme="dark"] .ai-practice-card h3.question-prompt {
+  color: var(--primary-color); /* Vẫn giữ màu primary của dark theme */
+}
+
+.fill-in-input, /* Style chung cho các input điền từ */
+.ai-practice-card .ai-fill-in /* Style cụ thể cho input trong AI practice card, có thể ghi đè hoặc bổ sung */ {
+  width: 100%;
+  max-width: 550px; /* Giới hạn chiều rộng tối đa, có thể điều chỉnh */
+  padding: 14px 18px; /* Padding thoải mái cho việc gõ */
+  font-size: 1.1em; /* Kích thước chữ dễ đọc, phù hợp với câu hỏi */
+  font-family: var(--font-primary); /* Đảm bảo font nhất quán */
+  color: var(--text-color);
+  background-color: var(--card-background-color); /* Nền sáng, sạch sẽ */
+  border: 2px solid var(--border-color); /* Viền rõ ràng hơn một chút */
+  border-radius: 10px; /* Bo góc nhiều hơn cho cảm giác hiện đại */
+  margin: 10px auto 20px auto; /* Căn giữa và có khoảng cách với các element khác */
+  display: block; /* Để margin auto hoạt động */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04); /* Shadow nhẹ bên ngoài tinh tế */
+  transition: border-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  appearance: none; /* Loại bỏ style mặc định của trình duyệt */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.fill-in-input::placeholder,
+.ai-practice-card .ai-fill-in::placeholder {
+  color: var(--light-text-color);
+  opacity: 0.7; /* Placeholder mờ hơn một chút */
+  font-style: italic;
+}
+
+.fill-in-input:focus,
+.ai-practice-card .ai-fill-in:focus {
+  outline: none;
+  border-color: var(--primary-color); /* Viền màu primary mạnh mẽ khi focus */
+  /* box-shadow: 0 0 0 3.5px rgba(var(--rgb-primary-color, 58, 124, 165), 0.3); */ /* Shadow viền ngoài rõ hơn */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04),
+    0 0 0 3.5px rgba(var(--rgb-primary-color, 58, 124, 165), 0.3); /* Kết hợp shadow hiện tại và focus ring */
+  /* Nhớ định nghĩa --rgb-primary-color trong :root và [data-theme="dark"] */
+}
+
+.fill-in-input:disabled,
+.ai-practice-card .ai-fill-in:disabled {
+  background-color: var(--background-color); /* Nền xám hơn khi disabled */
+  color: var(--light-text-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none; /* Bỏ shadow khi disabled */
+  border-color: var(--border-color); /* Viền trở lại màu mặc định */
+}
+
+/* Các class feedback (giữ nguyên hoặc tinh chỉnh nếu muốn) */
+.fill-in-input.correct-input-feedback,
+.ai-practice-card .ai-fill-in.correct-input-feedback {
+  border-color: var(--success-color) !important;
+  background-color: rgba(var(--rgb-success-color, 46, 204, 113), 0.08);
+  color: var(--success-color); /* Có thể cho chữ màu success luôn */
+}
+.fill-in-input.correct-input-feedback:focus,
+.ai-practice-card .ai-fill-in.correct-input-feedback:focus {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04),
+    0 0 0 3.5px rgba(var(--rgb-success-color, 46, 204, 113), 0.3);
+}
+
+.fill-in-input.incorrect-input-feedback,
+.ai-practice-card .ai-fill-in.incorrect-input-feedback {
+  border-color: var(--error-color) !important;
+  background-color: rgba(var(--rgb-error-color, 231, 76, 60), 0.08);
+  color: var(--error-color); /* Có thể cho chữ màu error luôn */
+}
+.fill-in-input.incorrect-input-feedback:focus,
+.ai-practice-card .ai-fill-in.incorrect-input-feedback:focus {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04),
+    0 0 0 3.5px rgba(var(--rgb-error-color, 231, 76, 60), 0.3);
+}
+
+/* Dark theme specific adjustments cho input (nếu cần thêm) */
+[data-theme="dark"] .fill-in-input,
+[data-theme="dark"] .ai-practice-card .ai-fill-in {
+  background-color: var(
+    --card-background-color
+  ); /* Có thể là màu tối hơn một chút so với card chính */
+  border-color: var(--border-color); /* Viền tối hơn */
+  color: var(--text-color); /* Chữ sáng */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow có thể cần điều chỉnh trên nền tối */
+}
+
+[data-theme="dark"] .fill-in-input::placeholder,
+[data-theme="dark"] .ai-practice-card .ai-fill-in::placeholder {
+  color: var(--light-text-color); /* Placeholder sáng hơn trên nền tối */
+  opacity: 0.6;
+}
+
+[data-theme="dark"] .fill-in-input:focus,
+[data-theme="dark"] .ai-practice-card .ai-fill-in:focus {
+  border-color: var(--primary-color); /* Màu primary của dark theme */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 0 0 3.5px rgba(var(--rgb-primary-color, 88, 166, 255), 0.35);
+}
+
+[data-theme="dark"] .fill-in-input:disabled,
+[data-theme="dark"] .ai-practice-card .ai-fill-in:disabled {
+  background-color: color-mix(
+    in srgb,
+    var(--card-background-color) 80%,
+    black
+  ); /* Nền tối hơn nữa khi disabled */
+  border-color: color-mix(in srgb, var(--border-color) 80%, black);
+  opacity: 0.5;
+}
+
+/* Nút Submit cho câu trả lời tự điền */
+.ai-practice-card .submit-ai-fill-btn {
+  /* Kế thừa từ .action-button.primary-btn */
+  /* Có thể thêm style riêng nếu muốn nó khác biệt hơn */
+  padding: 12px 28px; /* Padding khác một chút */
+  font-size: 1.05em;
+  display: block; /* Cho nút chiếm một dòng */
+  margin: 0 auto 15px auto; /* Căn giữa nút */
+  min-width: 150px; /* Chiều rộng tối thiểu */
+}
+
+/* Khu vực feedback */
+.ai-practice-card .ai-feedback {
+  padding: 12px 18px;
+  margin-top: 20px; /* Khoảng cách với input/options */
+  border-radius: 8px;
+  font-size: 1.05em;
+  text-align: center; /* Căn giữa feedback */
+}
+.ai-practice-card .ai-feedback.correct {
+  background-color: rgba(var(--rgb-success-color, 46, 204, 113), 0.15);
+  color: var(--success-color);
+  border: 1px solid rgba(var(--rgb-success-color, 46, 204, 113), 0.3);
+}
+.ai-practice-card .ai-feedback.incorrect {
+  background-color: rgba(var(--rgb-error-color, 231, 76, 60), 0.15);
+  color: var(--error-color);
+  border: 1px solid rgba(var(--rgb-error-color, 231, 76, 60), 0.3);
+}
+
+/* Style cho các options của MCQ (nếu câu hỏi là MCQ) */
+.ai-practice-card .options-list {
+  /* Style đã có từ trước, có thể giữ nguyên hoặc tinh chỉnh nhẹ */
+  margin-top: 5px;
+}
+.ai-practice-card .options-list li {
+  padding: 15px 18px; /* Padding lớn hơn cho dễ click */
+  font-size: 1.05em;
+  border-width: 1px; /* Viền mảnh hơn options mặc định */
+}
+
+/* Thanh điều hướng câu hỏi (nếu có) */
+#ai-question-navigation {
+  /* ID này đã được dùng trong JS */
+  /* Kế thừa từ .question-navigation-footer đã có */
+  margin-top: 25px; /* Khoảng cách lớn hơn */
+  padding-top: 20px;
+}
+#ai-question-navigation .action-button {
+  font-size: 1em; /* Kích thước nút điều hướng */
+}
+
+.single-mcq-card {
+  /* Card cho câu trắc nghiệm đơn lẻ */
+  /* Kế thừa nhiều từ .ai-practice-card hoặc .question-area */
+  text-align: left;
+  padding: 25px 30px;
+  background-color: var(--card-background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+  margin-bottom: 20px; /* Khoảng cách nếu có nhiều câu đơn lẻ */
+}
+
+.single-mcq-card h3.question-prompt {
+  /* Câu hỏi chính của MCQ đơn lẻ */
+  font-size: 1.25em; /* Có thể nhỏ hơn prompt của bài đọc */
+  color: var(
+    --text-color
+  ); /* Màu text bình thường, chỗ trống sẽ được highlight */
+  margin-bottom: 20px;
+  font-weight: 500; /* Không quá đậm */
+  line-height: 1.6;
+}
+.single-mcq-card h3.question-prompt .blank-marker.highlight {
+  /* Style như .blank-marker.highlight đã định nghĩa trước */
+  background-color: var(--accent-color);
+  color: black;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: bold; /* Chỗ trống đậm hơn */
+}
+[data-theme="dark"]
+  .single-mcq-card
+  h3.question-prompt
+  .blank-marker.highlight {
+  background-color: var(--light-accent-color);
+  color: var(--dark-color);
+}
+
+.options-list li.correct-hint {
+  /* Dùng để gợi ý đáp án đúng nếu người dùng chọn sai */
+  background-color: rgba(
+    var(--rgb-success-color, 46, 204, 113),
+    0.15
+  ) !important;
+  border: 1px dashed var(--success-color) !important;
+  color: var(--text-color) !important; /* Giữ màu text gốc để phân biệt */
+}
+[data-theme="dark"] .options-list li.correct-hint {
+  background-color: rgba(
+    var(--rgb-success-color, 52, 211, 153),
+    0.2
+  ) !important;
+  border-color: var(--success-color) !important;
+  color: var(--text-color) !important;
+}
+
+.single-mcq-card .options-list {
+  /* Kế thừa từ .options-list chung */
+}
+.single-mcq-card .options-list li {
+  /* Kế thừa từ .options-list li chung */
+  /* Có thể không cần .option-key ở đây nếu chỉ có text */
+}
+
+.single-mcq-card .ai-feedback small em {
+  /* Giải thích */
+  display: block;
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: var(--light-text-color);
+}
+
+/* CSS cho Passage Multi Cloze MCQ trong VerbMaster */
+
+.passage-mcq-card .passage-title {
+  font-family: var(
+    --font-secondary
+  ); /* Hoặc font bạn muốn cho tiêu đề bài đọc */
+  font-size: 1.5em; /* Kích thước tiêu đề */
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  text-align: center; /* Căn giữa tiêu đề bài đọc */
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.passage-mcq-card .passage-text .blank-in-passage {
+  /* Số trong (1)___ */
+  font-weight: bold;
+  color: var(--secondary-color); /* Màu khác cho số thứ tự chỗ trống */
+  /* Có thể thêm background nếu muốn */
+}
+
+.passage-questions-container {
+  margin-top: 25px; /* Khoảng cách từ đoạn văn đến khối câu hỏi con */
+  display: flex;
+  flex-direction: column;
+  gap: 25px; /* Khoảng cách giữa các câu hỏi con */
+}
+
+.sub-question-block {
+  padding: 20px;
+  background-color: var(--background-color); /* Nền hơi khác cho câu hỏi con */
+  border: 1px solid var(--border-color);
+  border-radius: 10px; /* Bo góc */
+  /* box-shadow: 0 2px 5px rgba(0,0,0,0.04); */ /* Shadow nhẹ nếu muốn */
+}
+[data-theme="dark"] .sub-question-block {
+  background-color: color-mix(
+    in srgb,
+    var(--card-background-color) 90%,
+    black
+  ); /* Tối hơn một chút */
+  border-color: color-mix(in srgb, var(--border-color) 120%, black);
+}
+
+.sub-question-prompt {
+  font-size: 1.1em; /* Font cho câu hỏi con */
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+.sub-question-prompt strong {
+  /* Số thứ tự 1., 2. */
+  color: var(--primary-color);
+  margin-right: 6px;
+  font-weight: 700;
+}
+
+.sub-options-list {
+  list-style: none;
+  padding: 0;
+}
+.sub-options-list li {
+  background-color: var(--card-background-color); /* Nền của option */
+  border: 1px solid var(--border-color);
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+}
+.sub-options-list li:hover:not(.disabled) {
+  background-color: var(--primary-color-light, #e8f0fe); /* Màu hover nhẹ */
+  border-color: var(--primary-color);
+  transform: translateX(3px);
+}
+[data-theme="dark"] .sub-options-list li:hover:not(.disabled) {
+  background-color: rgba(var(--rgb-primary-color, 88, 166, 255), 0.15);
+}
+
+.sub-options-list li .option-key {
+  /* Chữ A. B. C. D. */
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-right: 10px;
+  min-width: 18px; /* Đảm bảo thẳng hàng */
+  text-align: left;
+}
+.sub-options-list
+  li.answered.disabled:not(.correct):not(.incorrect):not(.correct-hint) {
+  opacity: 0.6; /* Làm mờ các option không được chọn và không phải là đáp án đúng */
+}
+.sub-options-list li.correct {
+  /* Lựa chọn đúng của người dùng */
+  background-color: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+  color: white !important;
+}
+.sub-options-list li.correct .option-key {
+  color: white !important;
+}
+
+.sub-options-list li.incorrect {
+  /* Lựa chọn sai của người dùng */
+  background-color: var(--error-color) !important;
+  border-color: var(--error-color) !important;
+  color: white !important;
+  text-decoration: line-through; /* Gạch ngang lựa chọn sai */
+}
+.sub-options-list li.incorrect .option-key {
+  color: white !important;
+}
+
+.sub-options-list li.correct-hint {
+  /* Đáp án đúng được gợi ý khi người dùng sai */
+  background-color: rgba(
+    var(--rgb-success-color, 46, 204, 113),
+    0.2
+  ) !important;
+  border: 2px solid var(--success-color) !important; /* Viền rõ hơn cho gợi ý */
+  color: var(--text-color) !important; /* Giữ màu chữ gốc */
+}
+.sub-options-list li.correct-hint .option-key {
+  color: var(--success-color) !important;
+}
+
+.sub-feedback {
+  /* Feedback cho từng câu hỏi con */
+  margin-top: 12px;
+  font-size: 0.95em;
+  text-align: left;
+  padding: 10px;
+  border-radius: 6px;
+}
+.sub-feedback.correct {
+  background-color: rgba(var(--rgb-success-color, 46, 204, 113), 0.1);
+  color: var(--success-color);
+  border: 1px solid rgba(var(--rgb-success-color, 46, 204, 113), 0.2);
+}
+.sub-feedback.incorrect {
+  background-color: rgba(var(--rgb-error-color, 231, 76, 60), 0.1);
+  color: var(--error-color);
+  border: 1px solid rgba(var(--rgb-error-color, 231, 76, 60), 0.2);
+}
+.sub-feedback small em {
+  /* Giải thích trong feedback */
+  display: block;
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: var(--light-text-color);
+}
+
+@media (max-width: 480px) {
+  /* Điều chỉnh cho màn hình nhỏ */
+  .toast-container {
+    left: 15px;
+    right: 15px;
+    top: 15px;
+    max-width: calc(100% - 30px); /* Chiếm gần hết chiều rộng */
+    align-items: center; /* Căn giữa các toast nếu container chiếm full width */
+  }
+  .toast {
+    width: 100%; /* Toast chiếm full width của container trên mobile */
+    transform: translateY(-120%); /* Bắt đầu từ trên cùng, trượt xuống */
+  }
+  .toast.show {
+    transform: translateY(0);
+  }
+}
+
+/* --- SESSION SUMMARY STYLING (Chung cho các chế độ & AI Practice) --- */
+.session-summary { /* Class gốc đã có, tinh chỉnh thêm */
+    width: 100%;
+    max-width: 700px; /* Có thể rộng hơn một chút cho summary */
+    background-color: var(--card-background-color);
+    padding: 30px 35px; /* Padding lớn hơn */
+    border-radius: 12px;
+    box-shadow: 0 6px 20px var(--shadow-color); /* Shadow rõ hơn */
+    text-align: center;
+    margin: 30px auto; /* Khoảng cách trên dưới */
+    border-top: 5px solid var(--primary-color); /* Viền trên màu primary làm điểm nhấn */
+}
+
+.session-summary h2 {
+    font-family: var(--font-secondary);
+    color: var(--primary-color);
+    font-size: 2em; /* Tiêu đề lớn */
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+[data-theme="dark"] .session-summary h2 {
+    color: var(--primary-color); /* Màu primary của dark theme */
+}
+
+.session-summary .summary-score {
+    font-size: 1.5em; /* Điểm số to, rõ ràng */
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 25px;
+    padding: 10px;
+    background-color: var(--background-color); /* Nền nhẹ cho điểm số */
+    border-radius: 8px;
+    display: inline-block; /* Để background vừa với text */
+}
+[data-theme="dark"] .session-summary .summary-score {
+    background-color: var(--border-color); /* Nền tối hơn một chút trong dark mode */
+}
+.session-summary .summary-score strong {
+    font-size: 1.2em; /* Số điểm to hơn chữ "Điểm của bạn" */
+    color: var(--primary-color); /* Màu primary cho số điểm */
+}
+[data-theme="dark"] .session-summary .summary-score strong {
+    color: var(--primary-color);
+}
+
+
+/* --- AI SUMMARY SPECIFIC STYLING --- */
+/* Kế thừa từ .session-summary, nhưng có thể có thêm chi tiết */
+.session-summary.ai-summary {
+    border-top-color: var(--secondary-color); /* Màu viền khác cho AI summary nếu muốn */
+}
+.session-summary.ai-summary h2 i.fa-robot { /* Icon AI */
+    color: var(--secondary-color); /* Màu khác cho icon AI */
+}
+
+
+/* --- REVIEW INCORRECT ANSWERS (Chung cho các summary) --- */
+.session-summary h3 { /* Tiêu đề "Xem Lại Câu Sai" */
+    font-size: 1.3em;
+    color: var(--primary-color); /* Hoặc var(--error-color) */
+    margin-top: 30px; /* Khoảng cách với phần điểm */
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+[data-theme="dark"] .session-summary h3 {
+    color: var(--primary-color);
+    border-bottom-color: var(--border-color);
+}
+
+.review-incorrect-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+    text-align: left; /* Căn trái cho danh sách câu sai */
+}
+
+.review-incorrect-list li {
+    background-color: var(--background-color);
+    padding: 15px 18px; /* Padding lớn hơn */
+    border-radius: 8px;
+    margin-bottom: 15px; /* Khoảng cách giữa các item */
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--error-color); /* Viền trái màu đỏ cho câu sai */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+[data-theme="dark"] .review-incorrect-list li {
+    background-color: color-mix(in srgb, var(--card-background-color) 90%, black); /* Nền tối hơn cho item */
+    border-color: var(--border-color);
+    border-left-color: var(--error-color);
+}
+
+.review-incorrect-list li .passage-context-summary {
+    cursor: pointer;
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 0.95em;
+    margin-bottom: 8px;
+    display: inline-block; /* Để có thể style thêm */
+    padding: 5px 0;
+    border-bottom: 1px dashed var(--primary-color);
+}
+.review-incorrect-list li .passage-context-summary:hover {
+    color: var(--secondary-color);
+    border-bottom-color: var(--secondary-color);
+}
+
+.review-incorrect-list li .passage-text-review {
+    font-size: 0.9em;
+    color: var(--light-text-color);
+    margin-bottom: 10px;
+    padding: 12px;
+    background-color: var(--card-background-color); /* Nền sáng hơn context */
+    border: 1px dashed var(--border-color);
+    border-radius: 6px;
+    line-height: 1.6;
+    max-height: 100px; /* Giới hạn chiều cao, cho phép cuộn */
+    overflow-y: auto;
+}
+[data-theme="dark"] .review-incorrect-list li .passage-text-review {
+    background-color: var(--background-color); /* Nền tối hơn cho context */
+    border-color: color-mix(in srgb, var(--border-color) 120%, black);
+}
+.review-incorrect-list li .passage-text-review .blank-marker.highlight {
+    /* Style đã có, đảm bảo nó vẫn nổi bật */
+    font-weight: bold;
+}
+
+
+.review-incorrect-list li .question-prompt-review {
+    font-weight: 600; /* Câu hỏi đậm hơn */
+    color: var(--text-color);
+    margin-bottom: 6px;
+    font-size: 1.05em;
+}
+.review-incorrect-list li .question-prompt-review strong { /* Chữ "Câu hỏi:" */
+    color: var(--secondary-color);
+}
+
+
+.review-incorrect-list li p { /* Các dòng text trong item review */
+    margin-bottom: 6px;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+.review-incorrect-list li p strong { /* Chữ "Bạn trả lời:", "Đáp án đúng:" */
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+
+.review-incorrect-list li .user-answer-review {
+    color: var(--error-color);
+    font-weight: 500;
+    /* text-decoration: line-through; */ /* Có thể thêm gạch ngang */
+    background-color: rgba(var(--rgb-error-color, 231, 76, 60), 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.review-incorrect-list li .correct-answer-review {
+    color: var(--success-color);
+    font-weight: 600; /* Đáp án đúng đậm hơn */
+    background-color: rgba(var(--rgb-success-color, 46, 204, 113), 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+.review-incorrect-list li small em { /* Giải thích */
+    color: var(--light-text-color);
+    font-size: 0.9em;
+}
+
+/* --- SUMMARY ACTIONS (Nút ở cuối summary) --- */
+.summary-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Khoảng cách giữa các nút */
+    margin-top: 35px; /* Khoảng cách lớn hơn với phần review */
+    flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+}
+.summary-actions .action-button { /* Kế thừa từ .action-button */
+    font-size: 1.05em; /* Chữ to hơn một chút */
+    padding: 12px 25px;
+    min-width: 180px; /* Chiều rộng tối thiểu cho nút */
+}
+
+.all-correct-message { /* Thông báo khi đúng hết */
+    color: var(--success-color);
+    font-size: 1.2em; /* To hơn một chút */
+    font-weight: 600;
+    padding: 20px;
+    background-color: rgba(var(--rgb-success-color, 46, 204, 113), 0.1);
+    border: 1px solid rgba(var(--rgb-success-color, 46, 204, 113), 0.2);
+    border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+[data-theme="dark"] .all-correct-message {
+    background-color: rgba(var(--rgb-success-color, 52, 211, 153), 0.15);
+    border-color: rgba(var(--rgb-success-color, 52, 211, 153), 0.3);
+}
+
+.instruction-text {
+    font-size: 0.95em; /* Kích thước chữ vừa phải */
+    color: var(--light-text-color); /* Màu chữ nhẹ nhàng, không quá nổi bật */
+    margin-top: 15px; /* Khoảng cách với element phía trên (thường là flashcard) */
+    margin-bottom: 15px; /* Khoảng cách với element phía dưới (thường là các nút action) */
+    padding: 0 10px; /* Padding trái phải nếu text dài */
+    line-height: 1.5; /* Dãn dòng dễ đọc */
+    text-align: center; /* Căn giữa text hướng dẫn */
+    font-style: italic; /* Chữ nghiêng để phân biệt với nội dung chính */
+    max-width: 90%; /* Giới hạn chiều rộng để không quá dài trên màn hình lớn */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Tùy chỉnh cho Dark Mode nếu cần */
+[data-theme="dark"] .instruction-text {
+    color: var(--light-text-color); /* Màu light-text-color của dark theme thường đã đủ tốt */
+    /* Nếu muốn sáng hơn một chút: */
+    /* color: color-mix(in srgb, var(--light-text-color) 80%, white); */
+}
+
+.flashcard .flashcard-example { /* Đặt trong context của .flashcard để cụ thể hơn */
+    font-size: 0.6em; /* Kích thước chữ nhỏ hơn đáng kể so với term/definition chính */
+    /* Hoặc bạn có thể dùng giá trị tuyệt đối như 13px hoặc 14px tùy theo font-size của .flashcard .front/.back */
+    /* Ví dụ, nếu .flashcard .front có font-size: 1.6em (khoảng 25.6px trên base 16px),
+       thì 0.6em của 25.6px là khoảng 15.36px.
+       Nếu .flashcard .front là 2em (32px), thì 0.6em là 19.2px, có thể hơi lớn.
+       Cân nhắc dùng 0.5em hoặc 0.55em nếu term/definition rất lớn.
+    */
+    color: var(--light-text-color); /* Màu chữ nhạt hơn */
+    font-style: italic; /* Chữ nghiêng để phân biệt */
+    margin-top: 12px; /* Khoảng cách với term/definition ở trên */
+    line-height: 1.4; /* Dãn dòng cho dễ đọc nếu ví dụ dài */
+    max-width: 90%;   /* Giới hạn chiều rộng nếu ví dụ quá dài */
+    text-align: center; /* Căn giữa ví dụ */
+    font-weight: 400; /* Font weight bình thường, không quá đậm */
+}
+
+/* Điều chỉnh màu cho Dark Mode */
+[data-theme="dark"] .flashcard .flashcard-example {
+    color: var(--light-text-color); /* Màu light-text-color của dark theme */
+    /* Nếu muốn nó sáng hơn một chút trên nền tối của flashcard (nếu flashcard tối) */
+    /* Ví dụ, nếu .flashcard .front trong dark mode có nền tối và chữ sáng: */
+    /* color: color-mix(in srgb, var(--text-color) 70%, var(--card-background-color)); */
+    /* Hoặc đơn giản là một màu xám sáng hơn: */
+    /* color: #a0aec0; (slate-400) */
+}
+
+/* Cụ thể hơn cho flashcard front và back nếu màu chữ của chúng khác nhau */
+.flashcard .front .flashcard-example {
+    /* Nếu .flashcard .front có nền tối và chữ sáng (như trong thiết kế hiện tại) */
+    color: rgba(255, 255, 255, 0.75); /* Màu trắng với độ trong suốt */
+}
+[data-theme="dark"] .flashcard .front .flashcard-example {
+    color: rgba(var(--rgb-text-color, 201, 209, 217), 0.75); /* Màu text của dark theme với độ trong suốt */
+}
+
+
+.flashcard .back .flashcard-example {
+    /* Nếu .flashcard .back có nền sáng và chữ tối */
+    color: var(--light-text-color);
+}
+[data-theme="dark"] .flashcard .back .flashcard-example {
+    color: var(--light-text-color); /* light-text-color của dark theme */
+}
+
+.session-summary .round-details {
+    margin-top: 30px; /* Khoảng cách với các nút action */
+    padding-top: 20px; /* Khoảng cách với đường kẻ trên */
+    border-top: 1px dashed var(--border-color); /* Đường kẻ phân cách nhẹ */
+    text-align: left; /* Căn trái cho nội dung chi tiết */
+}
+
+.session-summary .round-details h4 {
+    font-size: 1.15em; /* Kích thước tiêu đề nhỏ hơn h3 */
+    color: var(--secondary-color); /* Màu secondary cho tiêu đề phụ */
+    margin-bottom: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+.session-summary .round-details h4::before { /* Thêm một gạch đầu dòng hoặc icon nhỏ */
+    content: "\f1da"; /* Ví dụ: icon history từ Font Awesome */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 10px;
+    font-size: 0.9em;
+    color: var(--secondary-color);
+}
+[data-theme="dark"] .session-summary .round-details h4 {
+    color: var(--secondary-color); /* Màu secondary của dark theme */
+}
+[data-theme="dark"] .session-summary .round-details h4::before {
+    color: var(--secondary-color);
+}
+
+
+.session-summary .round-details ul {
+    list-style: none; /* Bỏ dấu chấm đầu dòng mặc định */
+    padding: 0;
+    max-height: 250px; /* Giới hạn chiều cao, cho phép cuộn nếu danh sách dài */
+    overflow-y: auto; /* Thêm thanh cuộn khi cần */
+    border: 1px solid var(--border-color); /* Viền nhẹ cho danh sách */
+    border-radius: 8px; /* Bo góc */
+    padding: 10px; /* Padding bên trong danh sách */
+    background-color: var(--background-color); /* Nền nhẹ cho danh sách */
+}
+[data-theme="dark"] .session-summary .round-details ul {
+    border-color: var(--border-color);
+    background-color: color-mix(in srgb, var(--card-background-color) 95%, black); /* Nền tối hơn một chút */
+}
+
+
+.session-summary .round-details li {
+    padding: 10px 12px; /* Padding cho mỗi item */
+    font-size: 0.95em; /* Kích thước chữ cho item */
+    color: var(--text-color);
+    display: flex; /* Sắp xếp từ và trạng thái trên cùng một hàng */
+    justify-content: space-between; /* Đẩy trạng thái sang phải */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    border-bottom: 1px solid var(--border-color); /* Đường kẻ giữa các item */
+    transition: background-color 0.2s;
+}
+.session-summary .round-details li:last-child {
+    border-bottom: none; /* Bỏ đường kẻ cho item cuối cùng */
+}
+.session-summary .round-details li:hover {
+    background-color: var(--card-background-color); /* Highlight nhẹ khi hover */
+}
+[data-theme="dark"] .session-summary .round-details li:hover {
+    background-color: var(--border-color);
+}
+
+
+.session-summary .round-details li strong { /* Từ vựng (term) */
+    font-weight: 600;
+    color: var(--primary-color); /* Màu primary cho từ vựng */
+    margin-right: 10px; /* Khoảng cách với trạng thái */
+}
+[data-theme="dark"] .session-summary .round-details li strong {
+    color: var(--primary-color);
+}
+
+.session-summary .round-details .status-mastered,
+.session-summary .round-details .status-learning {
+    font-weight: 500;
+    padding: 4px 10px; /* Padding cho tag trạng thái */
+    border-radius: 15px; /* Bo tròn tag */
+    font-size: 0.85em; /* Chữ nhỏ hơn cho tag */
+    white-space: nowrap; /* Ngăn tag xuống dòng */
+}
+
+.session-summary .round-details .status-mastered {
+    background-color: rgba(var(--rgb-success-color, 46, 204, 113), 0.15); /* Nền xanh lá nhạt */
+    color: var(--success-color); /* Chữ màu xanh lá */
+    border: 1px solid rgba(var(--rgb-success-color, 46, 204, 113), 0.3);
+}
+[data-theme="dark"] .session-summary .round-details .status-mastered {
+    background-color: rgba(var(--rgb-success-color, 52, 211, 153), 0.2);
+    border-color: rgba(var(--rgb-success-color, 52, 211, 153), 0.4);
+}
+
+.session-summary .round-details .status-learning {
+    background-color: rgba(var(--rgb-accent-color, 249, 168, 37), 0.15); /* Nền vàng/cam nhạt */
+    color: var(--accent-color); /* Chữ màu vàng/cam */
+    border: 1px solid rgba(var(--rgb-accent-color, 249, 168, 37), 0.3);
+}
+[data-theme="dark"] .session-summary .round-details .status-learning {
+    background-color: rgba(var(--rgb-light-accent-color, 251, 192, 45), 0.2); /* Sử dụng light-accent cho dark mode */
+    color: var(--light-accent-color);
+    border-color: rgba(var(--rgb-light-accent-color, 251, 192, 45), 0.4);
+}
+
+.session-summary .round-details li span:not([class*="status-"]) { /* Text phụ (Đúng X lần liên tiếp) */
+    font-size: 0.85em;
+    color: var(--light-text-color);
+    margin-left: 5px; /* Khoảng cách nhỏ với tag trạng thái */
+}
+
+/* --- MODERN PROGRESS BAR IN FOOTER --- */
+.progress-bar-container-footer {
+    flex-grow: 1; /* Cho phép nó chiếm không gian còn lại nếu footer là flex */
+    max-width: 300px; /* Giới hạn chiều rộng tối đa */
+    height: 12px; /* Chiều cao của thanh tiến trình */
+    background-color: var(--border-color); /* Màu nền của thanh */
+    border-radius: 6px; /* Bo tròn */
+    overflow: hidden; /* Đảm bảo fill không tràn ra ngoài */
+    position: relative; /* Để đặt text lên trên */
+    margin: 0 15px; /* Khoảng cách với các element khác trong footer */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+[data-theme="dark"] .progress-bar-container-footer {
+    background-color: color-mix(in srgb, var(--border-color) 80%, black);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.progress-bar-fill-footer {
+    height: 100%;
+    width: 0%; /* Bắt đầu từ 0%, sẽ được cập nhật bằng JS */
+    background-color: var(--primary-color); /* Màu của phần đã hoàn thành */
+    /* Hoặc dùng gradient:
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    */
+    border-radius: 6px; /* Bo tròn giống container */
+    transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animation mượt khi thay đổi width */
+}
+[data-theme="dark"] .progress-bar-fill-footer {
+    background-color: var(--primary-color); /* Màu primary của dark theme */
+}
+
+
+.progress-bar-text-footer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.75em; /* Kích thước chữ nhỏ */
+    font-weight: 600;
+    color: white; /* Màu chữ trên thanh fill */
+    text-shadow: 0 0 2px rgba(0,0,0,0.3); /* Shadow nhẹ cho dễ đọc */
+    white-space: nowrap;
+    /* Ẩn text nếu thanh fill quá ngắn */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+/* Chỉ hiện text khi thanh fill đủ rộng */
+.progress-bar-fill-footer.show-text + .progress-bar-text-footer {
+    opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  /* Tablet and smaller */
+  .sidebar {
+    width: var(--sidebar-width); /* Keep sidebar width fixed for tablet */
+  }
+  .main-header h1 {
+    font-size: 1.4em;
+  }
+  .progress-summary-header {
+    gap: 10px;
+    font-size: 0.8em;
+  }
+  .nav-btn::after {
+    /* Hide tooltips on smaller screens where hover is less common */
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mobile */
+  .main-container {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  #mode-specific-content {
+    padding: 30px 20px; /* Padding lớn hơn một chút trên PC */
+    /* Giới hạn chiều rộng tối đa và căn giữa cho nội dung chính của các chế độ */
+    /* max-width: 800px;  Bạn có thể đặt max-width ở đây HOẶC để các card con tự giới hạn */
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    flex-direction: row; /* Cho logo và nút menu (nếu có) nằm ngang */
+    justify-content: space-between; /* Căn logo sang trái, nút menu sang phải */
+    align-items: center;
+    padding: 10px 15px; /* Giảm padding cho sidebar trên mobile */
+    position: relative;
+    top: 0;
+    background-color: var(--card-background-color);
+    z-index: 1000;
+  }
+
+  .mobile-mode-selection {
+    display: grid; /* Sử dụng grid để xếp các nút */
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(120px, 1fr)
+    ); /* Grid tự động điều chỉnh */
+    /* Hoặc cố định 3 cột: grid-template-columns: repeat(3, 1fr); */
+    gap: 12px; /* Khoảng cách giữa các nút */
+  }
+  .app-content-view .welcome-message {
+    /* Khi có mobile-mode-selection, welcome message không cần là flex-center nữa */
+    /* display: block; */ /* Hoặc giữ nguyên nếu muốn */
+    /* text-align: center; */
+  }
+  .app-content-view .welcome-message ~ * {
+    /* Các element sau welcome message */
+    width: 100%; /* Đảm bảo các card học tập chiếm hết chiều rộng */
+  }
+
+  .logo {
+    margin-bottom: 0;
+    font-size: 1.4em; /* Giảm kích thước logo */
+    /* Không cần flex-grow nếu chỉ có logo và nút menu */
+  }
+  .logo .logo-img {
+    /* Nếu bạn có class .logo-img cho thẻ img logo */
+    height: 30px; /* Điều chỉnh kích thước ảnh logo */
+    width: auto;
+  }
+  .logo span {
+    /* Tên "VerbMaster" cạnh logo */
+    font-size: 0.9em; /* Có thể giảm nhẹ nếu cần */
+  }
+
+  /* --- XỬ LÝ NAVIGATION MENU CHO MOBILE --- */
+  /* Cách 1: Ẩn menu chính, dùng nút hamburger để toggle (cần JS) */
+  /* Hoặc Cách 2: Biến menu thành thanh cuộn ngang (đơn giản hơn nếu ít item) */
+  /* Hoặc Cách 3: Di chuyển các nút mode xuống content-area như các nút lớn */
+
+  /* GIẢ SỬ CHÚNG TA ẨN MENU ĐẦY ĐỦ VÀ BUTTON TRONG SIDEBAR TRÊN MOBILE */
+  /* VÀ SẼ THÊM CÁC NÚT CHỌN MODE TRỰC TIẾP VÀO .welcome-message */
+  .navigation-menu {
+    display: none; /* Ẩn menu dạng list trong sidebar trên mobile */
+  }
+  .data-controls-sidebar,
+  .theme-toggle,
+  .sidebar-footer,
+  .sidebar-separator {
+    display: none; /* Ẩn các phần này trong sidebar trên mobile */
+  }
+  /* NẾU BẠN MUỐN NÚT HAMBURGER ĐỂ MỞ MENU, THÊM HTML VÀ JS CHO NÓ */
+  /* Ví dụ:
+    .sidebar-menu-toggle { display: block; font-size: 1.5em; cursor: pointer; color: var(--primary-color); margin-left: auto; padding: 5px;}
+    .navigation-menu.mobile-open { display: flex; position: absolute; top: 100%; left:0; width:100%; background-color: var(--card-background-color); flex-direction: column; box-shadow: 0 3px 5px var(--shadow-color); padding: 10px 0; }
+    */
+
+  .content-area {
+    height: auto;
+    overflow-y: visible;
+    padding-top: 0; /* Không cần padding-top nếu sidebar không che */
+  }
+
+  .main-header {
+    padding: 10px 15px; /* Giảm padding header */
+    height: auto; /* Header tự điều chỉnh chiều cao */
+    flex-direction: column; /* Xếp chồng tiêu đề và progress summary */
+    align-items: flex-start; /* Căn trái cho các item trong header */
+    gap: 8px; /* Khoảng cách giữa tiêu đề và progress */
+  }
+  .main-header h1 {
+    font-size: 1.3em; /* Giảm kích thước tiêu đề chính */
+    margin-bottom: 5px; /* Giảm margin dưới tiêu đề */
+  }
+  .progress-summary-header {
+    gap: 10px; /* Giảm khoảng cách giữa các item progress */
+    font-size: 0.8em; /* Giảm font size của progress */
+    width: 100%; /* Cho progress summary chiếm hết chiều rộng */
+    justify-content: space-around; /* Căn đều các item progress */
+    padding-top: 5px;
+    border-top: 1px dashed var(--border-color); /* Phân cách nhẹ */
+  }
+  .progress-summary-header div {
+    text-align: center; /* Căn giữa text trong từng item progress */
+  }
+  .progress-summary-header span {
+    /* Các số trong progress */
+    display: block; /* Cho số nằm trên text */
+    margin-bottom: 2px;
+  }
+
+  .app-content-view {
+    padding: 20px 15px; /* Giảm padding cho content view */
+  }
+  .welcome-message {
+    padding: 15px 0; /* Giảm padding của welcome message */
+  }
+  .welcome-img {
+    max-width: 180px; /* Giảm kích thước ảnh welcome */
+    margin-bottom: 15px;
+  }
+  .welcome-message h2 {
+    font-size: 1.6em; /* Giảm font size tiêu đề welcome */
+  }
+  .welcome-message p {
+    font-size: 1em; /* Giảm font size text welcome */
+    line-height: 1.6;
+  }
+  .welcome-start-btn {
+    /* Nút bắt đầu trong welcome message */
+    padding: 12px 20px;
+    font-size: 1em;
+    margin-top: 20px; /* Tăng khoảng cách với text */
+  }
+
+  .main-footer {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+    gap: 12px; /* Tăng khoảng cách giữa các element trong footer */
+    text-align: center; /* Căn giữa các element trong footer */
+  }
+  .navigation-controls-footer {
+    order: 1;
+    width: 100%;
+    justify-content: space-around; /* Căn đều các nút điều hướng */
+  }
+  .navigation-controls-footer button {
+    padding: 10px; /* Điều chỉnh padding nút */
+    font-size: 0.9em; /* Giảm font size nút */
+  }
+  .card-number-display {
+    font-size: 0.9em;
+  }
+  .feedback-area-footer {
+    order: 2;
+    width: 100%;
+  }
+  .score-area-footer {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Flashcard, Question Area, Modal adjustments for mobile */
+  .flashcard-container,
+  .flashcard {
+    min-height: 180px; /* Giảm chiều cao flashcard */
+    height: 180px;
+  }
+  .flashcard-container {
+    /* max-width: 480px; đã có */
+    margin-top: 20px; /* Thêm khoảng cách trên cho flashcard */
+    margin-bottom: 20px;
+  }
+  .flashcard .front,
+  .flashcard .back {
+    font-size: 1.2em; /* Giảm font flashcard */
+    padding: 15px;
+  }
+  .flashcard-actions button {
+    padding: 10px 15px;
+    font-size: 0.9em;
+  }
+
+  .question-area,
+  .type-question,
+  .test-results-container {
+    padding: 15px; /* Giảm padding cho các card câu hỏi */
+    margin: 15px auto;
+  }
+  .question-area,
+  .type-question,
+  .test-results-container,
+  .advanced-stats-container {
+    /* max-width: 650px; hoặc 700px đã có */
+    /* Chúng sẽ tự căn giữa do align-items: center của #mode-specific-content */
+    margin-top: 20px; /* Thống nhất margin trên */
+    margin-bottom: 20px;
+  }
+
+  .session-summary {
+    /* Card kết thúc session */
+    max-width: 600px; /* Giới hạn chiều rộng */
+    /* Sẽ tự căn giữa */
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  .question-area p,
+  .type-question p {
+    font-size: 1.15em; /* Giảm font câu hỏi */
+    margin-bottom: 18px;
+  }
+  .options-list {
+    grid-template-columns: 1fr; /* Luôn xếp chồng options */
+    gap: 10px;
+  }
+  .options-list li {
+    padding: 15px; /* Giảm padding options */
+    font-size: 1em;
+  }
+  #type-answer-input,
+  #smart-type-answer-input,
+  #test-type-input,
+  #sl-type-input,
+  #test-type-in {
+    padding: 12px;
+    font-size: 1em;
+  }
+  .action-button {
+    /* Nút action chung */
+    padding: 10px 18px;
+    font-size: 0.95em;
+  }
+
+  .modal-content.stylish-modal {
+    padding: 20px 25px 25px 25px; /* Giảm padding modal */
+    max-width: calc(100% - 30px); /* Modal chiếm gần hết chiều rộng */
+  }
+  .stylish-modal h2 {
+    font-size: 1.5em; /* Giảm font tiêu đề modal */
+    margin-bottom: 20px;
+  }
+  .stylish-modal .form-group {
+    margin-bottom: 18px;
+  }
+  .stylish-modal label,
+  .stylish-modal .form-group > p {
+    font-size: 1em; /* Giảm font label modal */
+    margin-bottom: 8px;
+  }
+  .stylish-modal input[type="number"] {
+    padding: 10px;
+    font-size: 0.95em;
+  }
+  .stylish-modal .checkbox-label {
+    padding: 8px 0; /* Giảm padding checkbox */
+  }
+  .stylish-modal .checkbox-label input[type="checkbox"] {
+    height: 18px;
+    width: 18px;
+  }
+  .stylish-modal .modal-action-btn {
+    padding: 12px;
+    font-size: 1.05em;
+  }
+  .stylish-modal .close-btn {
+    top: 10px;
+    right: 12px;
+    font-size: 2em;
+  }
+
+  .advanced-stats-container h2 {
+    font-size: 1.8em;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr; /* Xếp chồng stat cards */
+    gap: 15px;
+  }
+  .stat-card {
+    padding: 15px;
+  }
+  .stat-card h3 {
+    font-size: 1.1em;
+  }
+  .stat-card.chart-card {
+    min-height: 300px; /* Giảm chiều cao tối thiểu chart card */
+  }
+  #masteryChart {
+    max-height: 250px; /* Giảm chiều cao chart */
+  }
+  .mobile-settings-toggle {
+    display: block; /* Hiện nút toggle trên mobile */
+  }
+
+  .sidebar .sidebar-main-content {
+    /* Nội dung chính của sidebar, bao gồm menu, data, theme */
+    display: none; /* Mặc định ẩn trên mobile */
+    position: absolute;
+    top: 100%; /* Ngay dưới thanh sidebar header */
+    left: 0;
+    width: 100%;
+    background-color: var(--card-background-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    z-index: 999; /* Dưới sidebar header một chút nhưng trên content chính */
+    padding: 15px;
+    border-top: 1px solid var(--border-color);
+    max-height: calc(
+      100vh - 60px - 20px
+    ); /* Chiều cao tối đa, trừ header và chút padding */
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
+  }
+  .sidebar.mobile-settings-open .sidebar-main-content {
+    display: block; /* Hiện menu khi .sidebar có class .mobile-settings-open */
+  }
+
+  /* Các thành phần bên trong .sidebar-main-content khi hiển thị trên mobile menu */
+  .sidebar.mobile-settings-open .navigation-menu {
+    display: flex; /* Hiển thị lại nav menu bên trong dropdown */
+    flex-direction: column; /* Các nút menu xếp dọc */
+    /* Style thêm cho các nút nav-btn bên trong dropdown nếu cần */
+  }
+  .sidebar.mobile-settings-open .nav-btn {
+    width: 100%;
+    justify-content: flex-start; /* Căn trái text trong nút */
+    padding: 12px 15px;
+  }
+
+  .sidebar.mobile-settings-open .data-controls-sidebar,
+  .sidebar.mobile-settings-open .theme-toggle {
+    display: block; /* Hiện lại các control này */
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-color);
+  }
+  .sidebar.mobile-settings-open .data-controls-sidebar h3 {
+    text-align: center;
+    font-size: 1.1em;
+  }
+  .sidebar.mobile-settings-open .theme-toggle {
+    justify-content: center; /* Căn giữa theme toggle */
+    padding-bottom: 10px;
+  }
+  .sidebar.mobile-settings-open .data-controls-sidebar button {
+    background-color: var(--background-color); /* Nền nhẹ cho nút */
+  }
+  [data-theme="dark"]
+    .sidebar.mobile-settings-open
+    .data-controls-sidebar
+    button {
+    background-color: var(--border-color);
+  }
+
+  .sidebar .sidebar-footer {
+    display: none; /* Mặc định ẩn footer trong sidebar trên mobile */
+    padding: 15px;
+    text-align: center;
+    font-size: 0.8em;
+    color: var(--light-text-color);
+    background-color: var(
+      --card-background-color
+    ); /* Đảm bảo có nền nếu nó tách rời */
+    border-top: 1px solid var(--border-color);
+  }
+  .sidebar.mobile-settings-open .sidebar-footer {
+    display: block; /* Hiện footer khi menu mobile mở */
+    /* Nó vẫn sẽ nằm trong .sidebar-main-content nếu bạn bọc nó vào đó,
+       hoặc bạn có thể style để nó là một phần của dropdown */
+    position: relative; /* Hoặc static nếu nó nằm trong sidebar-main-content */
+    width: 100%;
+    margin-top: auto; /* Đẩy xuống dưới nếu sidebar-main-content là flex column */
+  }
+}

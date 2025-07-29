@@ -1,0 +1,23 @@
+{
+  "name": "phrasal-verb-quiz",
+  "version": "1.0.0",
+  "description": "A Quizlet-like app to learn phrasal verbs.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "keywords": [
+    "phrasal verbs",
+    "quiz",
+    "learning"
+  ],
+  "author": "DADDY",
+  "license": "MIT"
+}

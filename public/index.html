@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="VerbMaster | Saygex69 - Chinh phục Phrasal Verbs Tiếng Anh hiệu quả với phương pháp học thông minh, flashcards, trắc nghiệm, và bài kiểm tra. Theo dõi tiến độ và nâng cao vốn từ vựng của bạn mỗi ngày!"
+    />
+    <meta
+      name="keywords"
+      content="học phrasal verbs, tiếng anh, verbmaster, học từ vựng, quizlet, flashcards, trắc nghiệm tiếng anh, ôn tập tiếng anh, spaced repetition, học tiếng anh online, saygex69"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://verbmaster.glitch.me/" />
+    <!-- THAY ĐỔI URL NÀY KHI DEPLOY CHÍNH THỨC -->
+    <meta
+      property="og:title"
+      content="VerbMaster by Saygex69 | Học Phrasal Verbs Thông Minh"
+    />
+    <meta
+      property="og:description"
+      content="Chinh phục Phrasal Verbs hiệu quả với flashcards, trắc nghiệm, và phương pháp lặp lại ngắt quãng. Theo dõi tiến độ và nâng cao vốn từ của bạn!"
+    />
+    <meta
+      property="og:image"
+      content="https://cdn.glitch.global/faec93b3-0d74-429c-bb70-2a632a40990a/Screenshot%202025-05-25%20210952.png?v=1748182208117"
+    />
+    <!-- THAY THẾ URL NÀY - ví dụ: ảnh logo hoặc ảnh minh họa học tập -->
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="VerbMaster by Saygex69" />
+    <meta property="og:locale" content="vi_VN" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://verbmaster.glitch.me/" />
+    <!-- THAY ĐỔI URL NÀY KHI DEPLOY CHÍNH THỨC -->
+    <meta
+      property="twitter:title"
+      content="VerbMaster by Saygex69 | Học Phrasal Verbs Thông Minh"
+    />
+    <meta
+      property="twitter:description"
+      content="Chinh phục Phrasal Verbs hiệu quả với flashcards, trắc nghiệm, và phương pháp lặp lại ngắt quãng. Theo dõi tiến độ và nâng cao vốn từ của bạn!"
+    />
+    <meta
+      property="twitter:image"
+      content="https://cdn.glitch.global/faec93b3-0d74-429c-bb70-2a632a40990a/Screenshot%202025-05-25%20210952.png?v=1748182208117"
+    />
+    <!-- THAY THẾ URL NÀY -->
+
+    <title>VerbMaster by Saygex69 | Học Phrasal Verbs</title>
+    <link
+      href="https://cdn.glitch.global/faec93b3-0d74-429c-bb70-2a632a40990a/Screenshot%202025-05-25%20210952.png?v=1748182208117"
+      rel="icon"
+    />
+    <!-- THAY THẾ URL FAVICON -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/charts.css" />
+  </head>
+  <body>
+    <div class="toast-container"></div>
+    <!-- Container cho Toast Messages -->
+    <div class="main-container">
+      <aside class="sidebar">
+        <div class="logo">
+          <i class="fas fa-graduation-cap logo-img" alt="VerbMaster Logo"></i>
+          <span>VerbMaster</span>
+        </div>
+        <button
+          id="mobileSettingsToggleBtn"
+          class="mobile-settings-toggle"
+          aria-label="Mở cài đặt"
+        >
+          <i class="fas fa-cog"></i>
+        </button>
+        <div class="sidebar-main-content">
+          <div class="sidebar-separator"></div>
+          <nav class="navigation-menu">
+            <button
+              id="startSmartLearnModeBtn"
+              class="nav-btn active-nav-btn"
+              data-tooltip="Học từ mới và ôn tập thông minh"
+            >
+              <i class="fas fa-brain"></i><span>Học Thông Minh</span>
+            </button>
+            <button
+              id="startFlashcardModeBtn"
+              class="nav-btn"
+              data-tooltip="Lật thẻ để học từ"
+            >
+              <i class="fas fa-clone"></i><span>Flashcards</span>
+            </button>
+            <button
+              id="startQuizModeBtn"
+              class="nav-btn"
+              data-tooltip="Trả lời câu hỏi trắc nghiệm"
+            >
+              <i class="fas fa-list-check"></i><span>Trắc Nghiệm</span>
+            </button>
+            <button
+              id="startTypeModeBtn"
+              class="nav-btn"
+              data-tooltip="Gõ đáp án đúng"
+            >
+              <i class="fas fa-keyboard"></i><span>Tự Luận</span>
+            </button>
+            <button
+              id="startTestModeBtn"
+              class="nav-btn"
+              data-tooltip="Làm bài kiểm tra tổng hợp"
+            >
+              <i class="fas fa-file-alt"></i><span>Kiểm Tra</span>
+            </button>
+            <button
+              id="startAiPracticeModeBtn"
+              class="nav-btn"
+              data-tooltip="Luyện tập với câu hỏi từ AI"
+            >
+              <i class="fas fa-robot"></i><span>AI Luyện Tập</span>
+            </button>
+            <button
+              id="startAdvancedStatsBtn"
+              class="nav-btn"
+              data-tooltip="Xem chi tiết tiến độ học tập"
+            >
+              <i class="fas fa-chart-line"></i><span>Thống Kê</span>
+            </button>
+          </nav>
+          <div class="sidebar-separator"></div>
+          <div class="data-controls-sidebar">
+            <h3><i class="fas fa-database"></i> Dữ liệu</h3>
+            <button id="saveProgressBtn" aria-label="Lưu tiến độ">
+              <i class="fas fa-save"></i> Lưu
+            </button>
+            <button id="loadProgressBtn" aria-label="Tải tiến độ">
+              <i class="fas fa-upload"></i> Tải
+            </button>
+            <button
+              id="resetProgressBtn"
+              class="danger-btn"
+              aria-label="Reset tiến độ"
+            >
+              <i class="fas fa-trash-alt"></i> Reset
+            </button>
+          </div>
+          <div class="theme-toggle">
+            <i class="fas fa-sun" aria-hidden="true"></i>
+            <label class="switch" aria-label="Chuyển đổi chế độ sáng tối">
+              <input type="checkbox" id="themeToggleCheckbox" />
+              <span class="slider round"></span>
+            </label>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="sidebar-footer">
+          <p>VerbMaster by Saygex69</p>
+          <p>© <span id="currentYear"></span>. All Rights Reserved.</p>
+        </div>
+      </aside>
+
+      <main class="content-area">
+        <header class="main-header">
+          <h1 id="current-mode-title">
+            Chào mừng đến với <span class="brand-highlight">VerbMaster!</span>
+          </h1>
+          <div id="progress-summary" class="progress-summary-header">
+            <!-- Initially hidden, shown by JS -->
+            <div><span id="countNew">0</span> Mới</div>
+            <div><span id="countLearning">0</span> Đang học</div>
+            <div><span id="countMastered">0</span> Thành thạo</div>
+            <div><span id="countTotal">0</span> Tổng</div>
+          </div>
+        </header>
+
+        <div id="app-content" class="app-content-view">
+          <div class="mobile-mode-selection" style="display: none">
+            <button id="startSmartLearnModeBtnMobile" class="mode-btn-mobile">
+              <i class="fas fa-brain"></i><span>Học Thông Minh</span>
+            </button>
+            <button id="startFlashcardModeBtnMobile" class="mode-btn-mobile">
+              <i class="fas fa-clone"></i><span>Flashcards</span>
+            </button>
+            <button id="startQuizModeBtnMobile" class="mode-btn-mobile">
+              <i class="fas fa-list-check"></i><span>Trắc Nghiệm</span>
+            </button>
+            <button id="startTypeModeBtnMobile" class="mode-btn-mobile">
+              <i class="fas fa-keyboard"></i><span>Tự Luận</span>
+            </button>
+            <button id="startTestModeBtnMobile" class="mode-btn-mobile">
+              <i class="fas fa-file-alt"></i><span>Kiểm Tra</span>
+            </button>
+            <button id="startAiPracticeModeBtnMobile" class="mode-btn-mobile">
+              <i class="fas fa-robot"></i><span>AI Luyện Tập</span>
+            </button>
+            <button id="startAdvancedStatsBtnMobile" class="mode-btn-mobile">
+              <i class="fas fa-chart-line"></i><span>Thống Kê</span>
+            </button>
+          </div>
+
+          <div id="welcome-message-container" class="welcome-message">
+            <!-- Nội dung welcome message như cũ -->
+            <img
+              src="https://cdn.glitch.global/faec93b3-0d74-429c-bb70-2a632a40990a/Thi%E1%BA%BFt%20k%E1%BA%BF%20ch%C6%B0a%20c%C3%B3%20t%C3%AAn.png?v=1748191831492"
+              alt="Người đang học tiếng Anh với sách và ý tưởng"
+              class="welcome-img"
+            />
+            <h2>Bắt đầu hành trình chinh phục Phrasal Verbs!</h2>
+            <p>
+              Chọn "Học Thông Minh" để bắt đầu lộ trình cá nhân hóa, hoặc khám
+              phá các chế độ khác từ thanh bên trái. <br />
+              VerbMaster ứng dụng phương pháp Lặp Lại Ngắt Quãng (Spaced
+              Repetition) giúp bạn ghi nhớ bền vững.
+            </p>
+            <button
+              id="startWelcomeSmartLearnBtn"
+              class="primary-btn welcome-start-btn"
+            >
+              <i class="fas fa-brain"></i> Bắt đầu Học Thông Minh
+            </button>
+          </div>
+
+          <!-- THÊM DIV NÀY VÀO ĐÂY -->
+          <div id="mode-specific-content">
+            <!-- Nội dung của các chế độ học sẽ được render vào đây bằng JavaScript -->
+          </div>
+          <!-- KẾT THÚC SỬA ĐỔI -->
+        </div>
+        <!-- Kết thúc div#app-content -->
+
+        <div
+          id="test-settings-modal"
+          class="modal"
+          role="dialog"
+          aria-labelledby="testSettingsModalTitle"
+          aria-modal="true"
+        >
+          <div class="modal-content stylish-modal">
+            <button
+              class="close-btn"
+              id="closeTestSettingsBtn"
+              aria-label="Đóng cài đặt kiểm tra"
+            >
+              ×
+            </button>
+            <h2 id="testSettingsModalTitle">
+              <i class="fas fa-cogs"></i> Cài Đặt Bài Kiểm Tra
+            </h2>
+            <div class="form-group">
+              <label for="numTestQuestions"
+                ><i class="fas fa-list-ol"></i> Số lượng câu hỏi:</label
+              >
+              <input
+                type="number"
+                id="numTestQuestions"
+                value="10"
+                min="1"
+                aria-describedby="numQuestionsHelp"
+              />
+              <small id="numQuestionsHelp" class="form-text text-muted"
+                >Chọn số câu hỏi cho bài kiểm tra của bạn.</small
+              >
+            </div>
+            <div class="form-group">
+              <p>
+                <i class="fas fa-question-circle"></i> Loại câu hỏi (chọn ít
+                nhất 1):
+              </p>
+              <label class="checkbox-label"
+                ><input
+                  type="checkbox"
+                  name="questionType"
+                  value="multipleChoice"
+                  checked
+                />
+                <i class="fas fa-tasks"></i> Trắc nghiệm</label
+              >
+              <label class="checkbox-label"
+                ><input
+                  type="checkbox"
+                  name="questionType"
+                  value="typeIn"
+                  checked
+                />
+                <i class="fas fa-i-cursor"></i> Tự luận (Điền từ)</label
+              >
+            </div>
+            <!-- THÊM PHẦN CÀI ĐẶT XÁO TRỘN -->
+            <div class="form-group">
+              <label class="checkbox-label" for="shuffleVerbsToggle">
+                <input type="checkbox" id="shuffleVerbsToggle" checked />
+                <i class="fas fa-random"></i> Xáo trộn thứ tự từ vựng
+              </label>
+              <small class="form-text text-muted"
+                >Bỏ chọn để học theo thứ tự gốc trong danh sách.</small
+              >
+            </div>
+            <!-- KẾT THÚC PHẦN CÀI ĐẶT XÁO TRỘN -->
+            <button id="generateTestBtn" class="primary-btn modal-action-btn">
+              <i class="fas fa-play-circle"></i> Bắt Đầu Kiểm Tra
+            </button>
+          </div>
+        </div>
+
+        <footer class="main-footer">
+          <div id="navigation-controls" class="navigation-controls-footer">
+            <button
+              id="prevCardBtn"
+              class="secondary-btn"
+              aria-label="Thẻ trước"
+            >
+              <i class="fas fa-chevron-left"></i> Trước
+            </button>
+            <span
+              id="cardNumber"
+              class="card-number-display"
+              aria-live="polite"
+            ></span>
+            <button id="nextCardBtn" class="secondary-btn" aria-label="Thẻ sau">
+              Sau <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+          <!-- THANH TIẾN TRÌNH MỚI -->
+          <div
+            id="progress-bar-container"
+            class="progress-bar-container-footer"
+            style="display: none"
+          >
+            <div id="progress-bar-fill" class="progress-bar-fill-footer"></div>
+            <span id="progress-bar-text" class="progress-bar-text-footer"
+              >0/0</span
+            >
+          </div>
+          <div
+            id="feedback-area"
+            class="feedback-area-footer"
+            aria-live="assertive"
+          ></div>
+          <div id="score-area" class="score-area-footer" aria-live="polite">
+            <i class="fas fa-star"></i> Điểm: <span id="score">0</span> /
+            <span id="totalQuestions">0</span>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="data/phrasalVerbs.js"></script>
+    <!-- Dữ liệu từ vựng gốc -->
+    <script type="module" src="js/charts.js"></script>
+    <!-- Module xử lý biểu đồ -->
+    <script type="module" src="script.js"></script>
+    <!-- Logic chính của ứng dụng -->
+    <script>
+      // Thêm năm hiện tại vào footer
+      document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
+      // Nút bắt đầu học thông minh từ trang chào mừng
+      const welcomeStartBtn = document.getElementById(
+        "startWelcomeSmartLearnBtn"
+      );
+      if (welcomeStartBtn) {
+        welcomeStartBtn.addEventListener("click", () => {
+          // Giả sử bạn có một function để kích hoạt chế độ học thông minh từ script.js
+          // và nó được export hoặc có sẵn globaly (không khuyến khích global)
+          // Cách tốt hơn là dispatch một custom event hoặc gọi trực tiếp nếu script.js đã load
+          const smartLearnButtonInSidebar = document.getElementById(
+            "startSmartLearnModeBtn"
+          );
+          if (smartLearnButtonInSidebar) {
+            smartLearnButtonInSidebar.click(); // Kích hoạt nút trong sidebar
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
