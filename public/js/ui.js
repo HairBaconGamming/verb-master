@@ -2,8 +2,9 @@ import { dom } from './dom.js';
 import { state, setCurrentMode } from './state.js';
 import { MASTERY_LEVELS } from './constants.js';
 import { updateChartTheme } from './charts.js';
-import { initQuizMode } from './modes/quiz.js';
-import { initTypeMode } from './modes/type.js';
+// XÓA CÁC DÒNG IMPORT TỪ FOLDER /MODES/
+// import { initQuizMode } from './modes/quiz.js';
+// import { initTypeMode } from './modes/type.js';
 
 let welcomeStartBtnListener = null;
 
@@ -142,12 +143,10 @@ export function updateScoreInFooter() {
         currentTotal = state.currentLearningSet.length;
     } else if (state.currentMode === 'aiPractice') {
         currentScore = state.aiPracticeUserScore;
-        const mainQ = state.currentAiPracticeSet[state.currentAiQuestionIndex];
-        if (mainQ && mainQ.type === 'passage_multi_cloze_mcq' && mainQ.content_json.questions) {
-            currentTotal = mainQ.content_json.questions.length;
-        } else {
-            currentTotal = 1; // For single questions
-        }
+        let totalInteractions = state.currentAiPracticeSet.reduce((acc, q) => {
+             return acc + (q.content_json?.questions?.length || 1);
+        }, 0);
+        currentTotal = totalInteractions;
     }
     
     dom.scoreDisplay.textContent = currentScore;
@@ -155,7 +154,8 @@ export function updateScoreInFooter() {
     updateProgressBar(currentScore, currentTotal);
 }
 
-export function showSessionEndSummary(modeName, finalScore, totalItems) {
+// SỬA LỖI: Thêm tham số `restartCallback`
+export function showSessionEndSummary(modeName, finalScore, totalItems, restartCallback) {
     updateModeTitle(`<i class="fas fa-flag-checkered"></i> Hoàn Thành: ${modeName}`);
     dom.modeSpecificContent.innerHTML = `
         <div class="session-summary animate-pop-in">
@@ -168,10 +168,12 @@ export function showSessionEndSummary(modeName, finalScore, totalItems) {
         </div>`;
     hideFooterControls();
 
-    document.getElementById("restart-session-btn").addEventListener("click", () => {
-        if (state.currentMode === "quiz") initQuizMode();
-        else if (state.currentMode === "type") initTypeMode();
-    });
+    // SỬA LỖI: Sử dụng `restartCallback` được truyền vào
+    const restartBtn = document.getElementById("restart-session-btn");
+    if (restartBtn && typeof restartCallback === 'function') {
+        restartBtn.addEventListener("click", restartCallback);
+    }
+
     document.getElementById("choose-other-mode-btn").addEventListener("click", () => {
         setActiveNavButton(null);
         setActiveMobileNavButton(null);
@@ -189,7 +191,7 @@ export function loadThemePreference() {
         document.body.removeAttribute("data-theme");
         dom.themeToggleCheckbox.checked = false;
     }
-    updateChartTheme();
+    // Không cần gọi updateChartTheme ở đây vì chart chưa được render
 }
 
 export function handleThemeToggle() {

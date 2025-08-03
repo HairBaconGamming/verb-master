@@ -1,10 +1,11 @@
 import { dom } from '../dom.js';
-import { state, setCurrentMode, setCurrentLearningSet, setSmartLearnSessionQueue, resetSmartLearnRound } from '../state.js';
+import { state, setCurrentMode, setCurrentLearningSet, setSmartLearnSessionQueue, resetSmartLearnRound, resetScore } from '../state.js';
 import { shuffleArray, normalizeAnswer, normalizeAndCompareAnswers } from '../utils.js';
 import { saveProgress } from '../storage.js';
 import { updateModeTitle, hideFooterControls, setActiveNavButton, setActiveMobileNavButton, updateScoreInFooter, displayWelcomeMessage } from '../ui.js';
 import { MASTERY_LEVELS, SMART_LEARN_ROUND_SIZE_ADVANCED, MIN_CORRECT_IN_ROW_FOR_ROUND_MASTERY, MAX_EXPOSURES_PER_VERB_IN_ROUND, FAMILIAR_THRESHOLD_SRS_BOX, LEARNING_THRESHOLD_SRS_BOX, SRS_INTERVALS } from '../constants.js';
 
+// ... (Các hàm renderSmartLearnFlashcard, renderSmartLearnMCQ, renderSmartLearnTypeIn, handleSmartLearnAnswer, determineNextChallengeType, etc. giữ nguyên như file trước)
 function renderSmartLearnFlashcard(verbData, type) {
     if (!dom.modeSpecificContent) return;
 
@@ -166,7 +167,9 @@ function handleSmartLearnAnswer(verbData, isCorrect, questionType) {
     }
 
     if (!roundProgress.masteredInRound && roundProgress.correctInRow >= MIN_CORRECT_IN_ROW_FOR_ROUND_MASTERY) {
-        roundProgress.masteredInRound = true;
+        if (questionType.includes('type_') || questionType.includes('hard_mcq')) {
+             roundProgress.masteredInRound = true;
+        }
     }
 
     if (roundProgress.masteredInRound && isCorrect) {
@@ -190,10 +193,9 @@ function handleSmartLearnAnswer(verbData, isCorrect, questionType) {
     state.smartLearnCurrentIndexInQueue++;
 
     if (!roundProgress.masteredInRound && roundProgress.timesSeenInRound < MAX_EXPOSURES_PER_VERB_IN_ROUND) {
-        // Logic to add more questions to the queue
         let nextChallengeType = determineNextChallengeType(verbData, isCorrect, questionType, roundProgress);
         if (nextChallengeType) {
-            const insertIndex = Math.min(state.smartLearnCurrentIndexInQueue + 1, state.smartLearnSessionQueue.length);
+            const insertIndex = Math.min(state.smartLearnCurrentIndexInQueue + Math.floor(Math.random() * 2) + 1, state.smartLearnSessionQueue.length);
             state.smartLearnSessionQueue.splice(insertIndex, 0, { verbId: verbData.id, type: nextChallengeType });
         }
     }
@@ -202,36 +204,50 @@ function handleSmartLearnAnswer(verbData, isCorrect, questionType) {
 }
 
 function determineNextChallengeType(verbData, lastAnswerWasCorrect, lastQuestionType, roundProgress) {
-    const typesUsed = roundProgress.questionTypesUsedInRound;
     if (!lastAnswerWasCorrect) {
         return "flashcard_recall";
     }
     if (lastQuestionType.includes('flashcard')) return 'easy_mcq_term_to_def';
     if (lastQuestionType.includes('easy_mcq')) return 'hard_mcq_term_to_def';
     if (lastQuestionType.includes('hard_mcq')) return 'type_definition_from_term';
-    return 'type_definition_from_term'; // Default challenge
+    return 'type_definition_from_term';
 }
 
 function addInitialQuestionsToQueue(verbId) {
     const verb = state.allPhrasalVerbs.find(v => v.id === verbId);
     if (!verb) return;
+    
+    const progress = state.smartLearnRoundProgress[verb.id];
 
-    state.smartLearnSessionQueue.push({ verbId: verb.id, type: 'flashcard_intro' });
+    if (progress.timesSeenInRound === 0 || verb.srsBox === 0) {
+        state.smartLearnSessionQueue.push({ verbId: verb.id, type: "flashcard_intro" });
+        progress.questionTypesUsedInRound.add("flashcard_intro");
+    }
+
     state.smartLearnSessionQueue.push({ verbId: verb.id, type: 'easy_mcq_term_to_def' });
+    progress.questionTypesUsedInRound.add('easy_mcq_term_to_def');
 }
 
 function selectVerbsForSmartLearnRound(targetSize) {
     const now = Date.now();
     let potentialVerbs = state.allPhrasalVerbs.filter(v => v.masteryLevel < MASTERY_LEVELS.MASTERED || (v.nextReviewDate && v.nextReviewDate <= now));
     potentialVerbs.sort((a, b) => (a.srsBox || 0) - (b.srsBox || 0) || (a.lastReviewed || 0) - (b.lastReviewed || 0));
-    return potentialVerbs.slice(0, targetSize);
+    let selectedSet = potentialVerbs.slice(0, targetSize);
+    
+    if (selectedSet.length < targetSize) {
+        const newestVerbs = state.allPhrasalVerbs
+            .filter(v => v.masteryLevel === MASTERY_LEVELS.NEW && !selectedSet.find(s => s.id === v.id))
+            .sort(() => 0.5 - Math.random());
+        selectedSet.push(...newestVerbs.slice(0, targetSize - selectedSet.length));
+    }
+    return selectedSet;
 }
 
 function generateMoreSmartLearnItems() {
     let itemsAdded = 0;
     state.currentLearningSet.forEach(verb => {
         const progress = state.smartLearnRoundProgress[verb.id];
-        if (!progress.masteredInRound && progress.timesSeenInRound < MAX_EXPOSURES_PER_VERB_IN_ROUND) {
+        if (progress && !progress.masteredInRound && progress.timesSeenInRound < MAX_EXPOSURES_PER_VERB_IN_ROUND) {
             const alreadyQueued = state.smartLearnSessionQueue.slice(state.smartLearnCurrentIndexInQueue).some(item => item.verbId === verb.id);
             if (!alreadyQueued) {
                 let nextType = determineNextChallengeType(verb, false, 'type_definition_from_term', progress);
@@ -267,7 +283,8 @@ function showSmartLearnRoundEndSummary() {
 
 export function displayNextSmartLearnItem() {
     if (state.smartLearnCurrentIndexInQueue >= state.smartLearnSessionQueue.length) {
-        if (!generateMoreSmartLearnItems()) {
+        const allMastered = state.currentLearningSet.every(v => state.smartLearnRoundProgress[v.id]?.masteredInRound);
+        if(allMastered || !generateMoreSmartLearnItems()) {
             showSmartLearnRoundEndSummary();
             return;
         }
@@ -283,7 +300,7 @@ export function displayNextSmartLearnItem() {
     }
     
     const roundProgress = state.smartLearnRoundProgress[verbData.id];
-    roundProgress.timesSeenInRound++;
+    if (roundProgress) roundProgress.timesSeenInRound++;
     
     switch (currentItem.type) {
         case "flashcard_intro":
@@ -325,8 +342,16 @@ export function initSmartLearnMode() {
             <div class="session-summary animate-pop-in">
                 <h2><i class="fas fa-check-circle"></i> Hoàn Tất!</h2>
                 <p>Bạn đã ôn tập tất cả các từ cần thiết. Hãy quay lại sau!</p>
+                <div class="summary-actions">
+                     <button id="choose-other-mode-btn" class="action-button secondary-btn"><i class="fas fa-th-large"></i> Chọn chế độ khác</button>
+                </div>
             </div>`;
         hideFooterControls();
+        document.getElementById("choose-other-mode-btn").addEventListener("click", () => {
+            setActiveNavButton(null);
+            setActiveMobileNavButton(null);
+            displayWelcomeMessage();
+        });
         return;
     }
 

@@ -30,18 +30,21 @@ function handleGeneralQuizChoice(selectedLi, qData) {
     saveProgress();
     updateScoreInFooter();
     
-    const nextBtn = document.getElementById("next-q-btn");
-    nextBtn.style.display = "inline-flex";
-    nextBtn.focus();
-    nextBtn.onclick = () => {
-        incrementAnswered();
-        displayGeneralQuizQuestion();
-    };
+    const nextBtn = dom.modeSpecificContent.querySelector("#next-q-btn"); // Sửa thành querySelector
+    if (nextBtn) {
+        nextBtn.style.display = "inline-flex";
+        nextBtn.focus();
+        nextBtn.onclick = () => {
+            incrementAnswered();
+            displayGeneralQuizQuestion();
+        };
+    }
 }
 
 function displayGeneralQuizQuestion() {
     if (state.questionsAnsweredInSession >= state.currentLearningSet.length) {
-        showSessionEndSummary("Trắc Nghiệm", state.score, state.currentLearningSet.length);
+        // SỬA LỖI: Truyền initQuizMode vào làm callback
+        showSessionEndSummary("Trắc Nghiệm", state.score, state.currentLearningSet.length, initQuizMode);
         return;
     }
     const qData = state.currentLearningSet[state.questionsAnsweredInSession];
@@ -98,7 +101,7 @@ export function initQuizMode(sessionSize = 10) {
     resetScore();
     
     hideFooterControls();
-    dom.scoreArea.style.display = "block";
+    dom.scoreArea.style.display = "flex"; // Sửa thành flex để căn giữa
     updateScoreInFooter();
     displayGeneralQuizQuestion();
 }
