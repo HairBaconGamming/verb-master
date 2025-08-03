@@ -20,7 +20,6 @@ function handleGeneralTypeSubmission(questionData) {
     nextBtn.style.display = "inline-flex";
     nextBtn.focus();
     nextBtn.onclick = () => {
-        // SỬA LỖI: Luôn tăng biến đếm câu hỏi đã trả lời ở đây
         incrementAnswered();
         displayGeneralTypeQuestion();
     };
@@ -75,6 +74,7 @@ function displayGeneralTypeQuestion() {
     }
 }
 
+// SỬA LỖI: Thêm "export"
 export function initTypeMode(sessionSize = 10) {
     setCurrentMode("type");
     setActiveNavButton(dom.startTypeModeBtn);
@@ -91,7 +91,6 @@ export function initTypeMode(sessionSize = 10) {
     }
 
     let tempSet = state.settings.shuffleVerbs ? shuffleArray([...state.allPhrasalVerbs]) : [...state.allPhrasalVerbs];
-    // SỬA LỖI: Đơn giản hóa logic, chỉ cần cắt mảng là đủ
     setCurrentLearningSet(tempSet.slice(0, Math.min(state.allPhrasalVerbs.length, sessionSize)));
 
     resetScore();

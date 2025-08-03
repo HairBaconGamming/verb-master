@@ -22,7 +22,7 @@ function displayFlashcard() {
             <button id="fc-mark-correct" class="action-button success-btn"><i class="fas fa-check-circle"></i> Đã biết</button>
         </div>`;
     
-    const fcEl = document.getElementById("current-flashcard");
+    const fcEl = dom.modeSpecificContent.querySelector("#current-flashcard");
     fcEl.addEventListener("click", () => fcEl.classList.toggle("flipped"));
     fcEl.addEventListener("keydown", (e) => {
         if (e.key === " " || e.key === "Enter") {
@@ -31,16 +31,16 @@ function displayFlashcard() {
         }
     });
 
-    document.getElementById("fc-mark-correct").onclick = () => handleFlashcardMarkSimple(true);
-    document.getElementById("fc-mark-incorrect").onclick = () => handleFlashcardMarkSimple(false);
+    dom.modeSpecificContent.querySelector("#fc-mark-correct").onclick = () => handleFlashcardMarkSimple(true);
+    dom.modeSpecificContent.querySelector("#fc-mark-incorrect").onclick = () => handleFlashcardMarkSimple(false);
     updateFlashcardNavUI();
 }
 
 function handleFlashcardMarkSimple(known) {
     const verb = state.currentLearningSet[state.currentIndex];
     verb.lastReviewed = Date.now();
-    if (known) verb.totalCorrect++;
-    else verb.totalIncorrect++;
+    if (known) verb.totalCorrect = (verb.totalCorrect || 0) + 1;
+    else verb.totalIncorrect = (verb.totalIncorrect || 0) + 1;
 
     if (known && verb.masteryLevel < MASTERY_LEVELS.FAMILIAR) verb.masteryLevel = MASTERY_LEVELS.FAMILIAR;
     else if (!known && verb.masteryLevel > MASTERY_LEVELS.NEW) verb.masteryLevel = MASTERY_LEVELS.NEW;
@@ -66,6 +66,7 @@ function updateFlashcardNavUI() {
     dom.cardNumberDisplay.textContent = `${state.currentIndex + 1} / ${state.currentLearningSet.length}`;
 }
 
+// SỬA LỖI: Thêm "export"
 export function navigateFlashcardPrev() {
     if (state.currentMode === "flashcard" && state.currentIndex > 0) {
         setCurrentIndex(state.currentIndex - 1);
@@ -73,6 +74,7 @@ export function navigateFlashcardPrev() {
     }
 }
 
+// SỬA LỖI: Thêm "export"
 export function navigateFlashcardNext() {
     if (state.currentMode === "flashcard" && state.currentIndex < state.currentLearningSet.length - 1) {
         setCurrentIndex(state.currentIndex + 1);
@@ -83,6 +85,7 @@ export function navigateFlashcardNext() {
     }
 }
 
+// SỬA LỖI: Thêm "export"
 export function initFlashcardMode() {
     setCurrentMode("flashcard");
     setActiveNavButton(dom.startFlashcardModeBtn);

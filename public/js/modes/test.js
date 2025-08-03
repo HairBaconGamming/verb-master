@@ -22,8 +22,8 @@ function showTestResults() {
             </li>`;
 
         item.lastReviewed = Date.now();
-        if (item.isCorrect) item.totalCorrect++;
-        else item.totalIncorrect++;
+        if (item.isCorrect) item.totalCorrect = (item.totalCorrect || 0) + 1;
+        else item.totalIncorrect = (item.totalIncorrect || 0) + 1;
 
         if (item.isCorrect && item.masteryLevel < MASTERY_LEVELS.FAMILIAR) item.masteryLevel = MASTERY_LEVELS.FAMILIAR;
         else if (!item.isCorrect && item.masteryLevel >= MASTERY_LEVELS.LEARNING) item.masteryLevel = MASTERY_LEVELS.FAMILIAR;
@@ -91,9 +91,9 @@ function displayTestQuestionItem() {
                 <input type="text" id="test-type-in" placeholder="Đáp án..." autocomplete="off" autocorrect="off" autocapitalize="none">
                 <button id="sub-test-type" class="action-button primary-btn" style="margin-top:15px;">Nộp & Tiếp</button>
             </div>`;
-        const inputEl = document.getElementById("test-type-in");
+        const inputEl = dom.modeSpecificContent.querySelector("#test-type-in");
         inputEl.focus();
-        const subBtn = document.getElementById("sub-test-type");
+        const subBtn = dom.modeSpecificContent.querySelector("#sub-test-type");
         const handler = () => {
             qData.userAnswer = inputEl.value.trim();
             const correctOpts = qData.definition.toLowerCase().split(" / ").map(s => s.trim());
@@ -114,7 +114,7 @@ function displayTestQuestionItem() {
     }
 }
 
-
+// SỬA LỖI: Thêm "export"
 export function startNewTest() {
     const numQuestions = parseInt(dom.numTestQuestionsInput.value);
     const selectedTypesCheckboxes = document.querySelectorAll('#test-settings-modal input[name="questionType"]:checked');
@@ -141,11 +141,12 @@ export function startNewTest() {
 
     resetScore();
     hideFooterControls();
-    dom.scoreArea.style.display = "block";
+    dom.scoreArea.style.display = "flex";
     updateScoreInFooter();
     displayTestQuestionItem();
 }
 
+// SỬA LỖI: Thêm "export"
 export function initTestSettings() {
     setCurrentMode("test");
     updateModeTitle('<i class="fas fa-file-alt"></i> Bài Kiểm Tra');
