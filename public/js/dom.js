@@ -18,6 +18,7 @@ export const dom = {
     startTestModeBtn: document.getElementById("startTestModeBtn"),
     startAiPracticeModeBtn: document.getElementById("startAiPracticeModeBtn"),
     startAdvancedStatsBtn: document.getElementById("startAdvancedStatsBtn"),
+    startExplorerModeBtn: document.getElementById("startExplorerModeBtn"),
 
     saveProgressBtn: document.getElementById("saveProgressBtn"),
     loadProgressBtn: document.getElementById("loadProgressBtn"),
@@ -50,6 +51,7 @@ export const dom = {
     startTestModeBtnMobile: document.getElementById("startTestModeBtnMobile"),
     startAiPracticeModeBtnMobile: document.getElementById("startAiPracticeModeBtnMobile"),
     startAdvancedStatsBtnMobile: document.getElementById("startAdvancedStatsBtnMobile"),
+    startExplorerModeBtnMobile: document.getElementById("startExplorerModeBtnMobile"),
 
     // Mobile specific UI
     mobileSettingsToggleBtn: document.getElementById("mobileSettingsToggleBtn"),
