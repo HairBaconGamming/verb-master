@@ -1,8 +1,8 @@
 import { dom } from '../dom.js';
 import { state, setCurrentMode } from '../state.js';
 import { updateModeTitle, hideFooterControls, displayWelcomeMessage, setActiveNavButton, setActiveMobileNavButton } from '../ui.js';
-import { renderMasteryDoughnutChart } from '../charts.js';
-import { MASTERY_LEVELS, SRS_INTERVALS } from '../constants.js';
+import { renderMasteryDoughnutChart } from '../chart.js'; // SỬA LỖI: charts.js -> chart.js
+import { MASTERY_LEVELS } from '../constants.js';
 import { initSmartLearnMode } from './smartlearn.js';
 
 function renderAdvancedStats() {
@@ -23,7 +23,8 @@ function renderAdvancedStats() {
         [MASTERY_LEVELS.MASTERED]: 0,
     };
     state.allPhrasalVerbs.forEach(v => {
-        verbsByDetailedMastery[v.masteryLevel]++;
+        // Fallback for older data structures that might not have masteryLevel
+        verbsByDetailedMastery[v.masteryLevel || MASTERY_LEVELS.NEW]++;
     });
     
     const detailedMasteryDataValues = Object.values(MASTERY_LEVELS).sort((a,b)=>a-b).map(level => verbsByDetailedMastery[level]);
@@ -58,7 +59,7 @@ function renderAdvancedStats() {
             <div class="stats-grid equal-height-cards">
                 <div class="stat-card list-card">
                     <h3><i class="fas fa-thumbs-up"></i> Top Hay Đúng</h3>
-                    ${mostCorrect.length > 0 ? `<ul>${mostCorrect.map(v => `<li>${v.term} <span class="count-badge">${v.totalCorrect || 0}</span></li>`).join('')}</ul>` : '<p>Chưa có dữ liệu.</p>'}
+                    ${mostCorrect.length > 0 && mostCorrect[0].totalCorrect > 0 ? `<ul>${mostCorrect.map(v => `<li>${v.term} <span class="count-badge">${v.totalCorrect || 0}</span></li>`).join('')}</ul>` : '<p>Chưa có dữ liệu.</p>'}
                 </div>
                 <div class="stat-card list-card">
                     <h3><i class="fas fa-exclamation-triangle"></i> Top Hay Sai</h3>
@@ -76,7 +77,6 @@ function renderAdvancedStats() {
     const reviewBtn = document.getElementById("reviewDueNowBtn");
     if (reviewBtn) reviewBtn.addEventListener('click', initSmartLearnMode);
 }
-
 
 export function initAdvancedStatsMode() {
     setCurrentMode("advancedStats");

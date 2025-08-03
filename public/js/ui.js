@@ -1,10 +1,7 @@
 import { dom } from './dom.js';
 import { state, setCurrentMode } from './state.js';
 import { MASTERY_LEVELS } from './constants.js';
-import { updateChartTheme } from './charts.js';
-// XÓA CÁC DÒNG IMPORT TỪ FOLDER /MODES/
-// import { initQuizMode } from './modes/quiz.js';
-// import { initTypeMode } from './modes/type.js';
+import { updateChartTheme } from './chart.js'; // SỬA LỖI: charts.js -> chart.js
 
 let welcomeStartBtnListener = null;
 
@@ -13,16 +10,20 @@ export function displayWelcomeMessage() {
     dom.currentModeTitle.innerHTML = 'Chào mừng đến với <span class="brand-highlight">VerbMaster!</span>';
 
     if (dom.welcomeMessageContainer) {
-        dom.welcomeMessageContainer.innerHTML = `
-            <img src="https://cdn.glitch.global/faec93b3-0d74-429c-bb70-2a632a40990a/Thi%E1%BA%BFt%20k%E1%BA%BF%20ch%C6%B0a%20c%C3%B3%20t%C3%AAn.png?v=1748191831492" alt="Người đang học tiếng Anh với sách và ý tưởng" class="welcome-img">
-            <h2>Bắt đầu hành trình chinh phục Phrasal Verbs!</h2>
-            <p>Chọn một chế độ học để bắt đầu. <br> VerbMaster ứng dụng phương pháp Lặp Lại Ngắt Quãng (Spaced Repetition) giúp bạn ghi nhớ bền vững.</p>
-            <button id="startWelcomeSmartLearnBtn" class="primary-btn welcome-start-btn"><i class="fas fa-brain"></i> Bắt đầu Học Thông Minh</button>
-        `;
         dom.welcomeMessageContainer.style.display = "block";
+        // Chỉ render lại HTML nếu chưa có, tránh gỡ event listener không cần thiết
+        if (!document.getElementById("startWelcomeSmartLearnBtn")) {
+            dom.welcomeMessageContainer.innerHTML = `
+                <img src="https://cdn.glitch.global/faec93b3-0d74-429c-bb70-2a632a40990a/Thi%E1%BA%BFt%20k%E1%BA%BF%20ch%C6%B0a%20c%C3%B3%20t%C3%AAn.png?v=1748191831492" alt="Người đang học tiếng Anh với sách và ý tưởng" class="welcome-img">
+                <h2>Bắt đầu hành trình chinh phục Phrasal Verbs!</h2>
+                <p>Chọn một chế độ học để bắt đầu. <br> VerbMaster ứng dụng phương pháp Lặp Lại Ngắt Quãng (Spaced Repetition) giúp bạn ghi nhớ bền vững.</p>
+                <button id="startWelcomeSmartLearnBtn" class="primary-btn welcome-start-btn"><i class="fas fa-brain"></i> Bắt đầu Học Thông Minh</button>
+            `;
+        }
 
         const welcomeStartBtn = document.getElementById("startWelcomeSmartLearnBtn");
         if (welcomeStartBtn) {
+            // Gỡ listener cũ trước khi thêm mới để tránh gọi nhiều lần
             if (welcomeStartBtnListener) {
                 welcomeStartBtn.removeEventListener('click', welcomeStartBtnListener);
             }
@@ -154,7 +155,6 @@ export function updateScoreInFooter() {
     updateProgressBar(currentScore, currentTotal);
 }
 
-// SỬA LỖI: Thêm tham số `restartCallback`
 export function showSessionEndSummary(modeName, finalScore, totalItems, restartCallback) {
     updateModeTitle(`<i class="fas fa-flag-checkered"></i> Hoàn Thành: ${modeName}`);
     dom.modeSpecificContent.innerHTML = `
@@ -168,7 +168,6 @@ export function showSessionEndSummary(modeName, finalScore, totalItems, restartC
         </div>`;
     hideFooterControls();
 
-    // SỬA LỖI: Sử dụng `restartCallback` được truyền vào
     const restartBtn = document.getElementById("restart-session-btn");
     if (restartBtn && typeof restartCallback === 'function') {
         restartBtn.addEventListener("click", restartCallback);
@@ -191,7 +190,6 @@ export function loadThemePreference() {
         document.body.removeAttribute("data-theme");
         dom.themeToggleCheckbox.checked = false;
     }
-    // Không cần gọi updateChartTheme ở đây vì chart chưa được render
 }
 
 export function handleThemeToggle() {
