@@ -5,25 +5,25 @@ import { saveProgress } from '../storage.js';
 import { updateModeTitle, hideFooterControls, showSessionEndSummary, updateScoreInFooter, setActiveNavButton, setActiveMobileNavButton } from '../ui.js';
 
 function handleGeneralTypeSubmission(questionData) {
-    const inputEl = document.getElementById("type-ans-in");
-    if (!inputEl) return;
+    // SỬA LỖI: Tìm các phần tử bên trong `modeSpecificContent`
+    const inputEl = dom.modeSpecificContent.querySelector("#type-ans-in");
+    const subBtn = dom.modeSpecificContent.querySelector("#sub-type-ans");
+    const nextBtn = dom.modeSpecificContent.querySelector("#next-q-btn");
+
+    if (!inputEl || !subBtn || !nextBtn) return;
 
     const userAnswer = inputEl.value;
     const correctAnswerString = questionData.definition;
     const isCorrect = normalizeAndCompareAnswers(userAnswer, correctAnswerString);
 
     inputEl.disabled = true;
-    document.getElementById("sub-type-ans").style.display = "none";
-    const nextBtn = document.getElementById("next-q-btn");
-    
-    if (nextBtn) {
-        nextBtn.style.display = "inline-flex";
-        nextBtn.focus();
-        nextBtn.onclick = () => {
-            incrementAnswered();
-            displayGeneralTypeQuestion();
-        };
-    }
+    subBtn.style.display = "none";
+    nextBtn.style.display = "inline-flex";
+    nextBtn.focus();
+    nextBtn.onclick = () => {
+        incrementAnswered();
+        displayGeneralTypeQuestion();
+    };
 
     if (isCorrect) {
         incrementScore();
@@ -45,7 +45,7 @@ function handleGeneralTypeSubmission(questionData) {
 
 function displayGeneralTypeQuestion() {
     if (state.questionsAnsweredInSession >= state.currentLearningSet.length) {
-        showSessionEndSummary("Tự Luận", state.score, state.currentLearningSet.length);
+        showSessionEndSummary("Tự Luận", state.score, state.currentLearningSet.length, initTypeMode);
         return;
     }
     const qData = state.currentLearningSet[state.questionsAnsweredInSession];
@@ -59,18 +59,21 @@ function displayGeneralTypeQuestion() {
     
     dom.feedbackArea.textContent = `Câu ${state.questionsAnsweredInSession + 1}/${state.currentLearningSet.length}`;
     
-    const inputEl = document.getElementById("type-ans-in");
-    inputEl.focus();
-    const subBtn = document.getElementById("sub-type-ans");
+    // Gắn event listener vào các nút và input vừa được tạo
+    const inputEl = dom.modeSpecificContent.querySelector("#type-ans-in");
+    const subBtn = dom.modeSpecificContent.querySelector("#sub-type-ans");
     const handler = () => handleGeneralTypeSubmission(qData);
-
-    subBtn.addEventListener("click", handler);
-    inputEl.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            handler();
-            e.preventDefault();
-        }
-    });
+    
+    if (inputEl && subBtn) {
+        inputEl.focus();
+        subBtn.addEventListener("click", handler);
+        inputEl.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                handler();
+            }
+        });
+    }
 }
 
 export function initTypeMode(sessionSize = 10) {
@@ -84,15 +87,24 @@ export function initTypeMode(sessionSize = 10) {
 
     if (state.allPhrasalVerbs.length === 0) {
         dom.modeSpecificContent.innerHTML = '<p class="info-message">Không có từ vựng nào để học.</p>';
+        hideFooterControls();
         return;
     }
 
     let tempSet = state.settings.shuffleVerbs ? shuffleArray([...state.allPhrasalVerbs]) : [...state.allPhrasalVerbs];
     setCurrentLearningSet(tempSet.slice(0, Math.min(state.allPhrasalVerbs.length, sessionSize)));
+
+    // SỬA LỖI: Kiểm tra xem có từ nào được chọn không
+    if (state.currentLearningSet.length === 0) {
+        dom.modeSpecificContent.innerHTML = '<p class="info-message">Không có từ nào phù hợp để bắt đầu vòng chơi này.</p>';
+        hideFooterControls();
+        return;
+    }
+
     resetScore();
     
     hideFooterControls();
-    dom.scoreArea.style.display = "block";
+    dom.scoreArea.style.display = "flex"; // Sửa lại thành flex cho đúng với CSS
     updateScoreInFooter();
     displayGeneralTypeQuestion();
 }

@@ -9,28 +9,33 @@ function handleGeneralQuizChoice(selectedLi, qData) {
     const correctAns = qData.definition;
     const isCorrect = normalizeAnswer(selectedAns) === normalizeAnswer(correctAns);
 
+    // Vô hiệu hóa tất cả các lựa chọn và hiển thị đáp án đúng/sai
     dom.modeSpecificContent.querySelectorAll(".options-list li").forEach(li => {
         li.classList.add("disabled");
-        if (normalizeAnswer(li.dataset.answer) === normalizeAnswer(correctAns)) li.classList.add("correct");
-        else if (li === selectedLi && !isCorrect) li.classList.add("incorrect");
+        if (normalizeAnswer(li.dataset.answer) === normalizeAnswer(correctAns)) {
+            li.classList.add("correct");
+        } else if (li === selectedLi && !isCorrect) {
+            li.classList.add("incorrect");
+        }
     });
 
     if (isCorrect) {
         incrementScore();
         dom.feedbackArea.textContent = "Chính xác!";
         dom.feedbackArea.className = "feedback-area-footer correct";
-        qData.totalCorrect++;
+        qData.totalCorrect = (qData.totalCorrect || 0) + 1;
     } else {
         dom.feedbackArea.textContent = `Sai! Đúng là: ${correctAns}`;
         dom.feedbackArea.className = "feedback-area-footer incorrect";
-        qData.totalIncorrect++;
+        qData.totalIncorrect = (qData.totalIncorrect || 0) + 1;
     }
     
     qData.lastReviewed = Date.now();
     saveProgress();
     updateScoreInFooter();
     
-    const nextBtn = dom.modeSpecificContent.querySelector("#next-q-btn"); // Sửa thành querySelector
+    // SỬA LỖI: Tìm nút "Tiếp" bên trong `modeSpecificContent`
+    const nextBtn = dom.modeSpecificContent.querySelector("#next-q-btn");
     if (nextBtn) {
         nextBtn.style.display = "inline-flex";
         nextBtn.focus();
@@ -43,7 +48,6 @@ function handleGeneralQuizChoice(selectedLi, qData) {
 
 function displayGeneralQuizQuestion() {
     if (state.questionsAnsweredInSession >= state.currentLearningSet.length) {
-        // SỬA LỖI: Truyền initQuizMode vào làm callback
         showSessionEndSummary("Trắc Nghiệm", state.score, state.currentLearningSet.length, initQuizMode);
         return;
     }
@@ -70,13 +74,14 @@ function displayGeneralQuizQuestion() {
     
     dom.feedbackArea.textContent = `Câu ${state.questionsAnsweredInSession + 1}/${state.currentLearningSet.length}`;
     
+    // Gắn event listener vào các lựa chọn vừa được tạo
     dom.modeSpecificContent.querySelectorAll(".options-list li").forEach(li => {
         const handler = () => handleGeneralQuizChoice(li, qData);
         li.addEventListener("click", handler);
         li.addEventListener("keydown", (e) => {
             if (e.key === "Enter" || e.key === " ") {
-                handler();
                 e.preventDefault();
+                handler();
             }
         });
     });
@@ -86,22 +91,31 @@ export function initQuizMode(sessionSize = 10) {
     setCurrentMode("quiz");
     setActiveNavButton(dom.startQuizModeBtn);
     setActiveMobileNavButton(dom.startQuizModeBtnMobile);
-    updateModeTitle('<i class="fQas fa-list-check"></i> Trắc Nghiệm');
+    updateModeTitle('<i class="fas fa-list-check"></i> Trắc Nghiệm');
     
     if (dom.welcomeMessageContainer) dom.welcomeMessageContainer.style.display = 'none';
     if (dom.modeSpecificContent) dom.modeSpecificContent.style.display = 'block';
 
     if (state.allPhrasalVerbs.length < 4) {
         dom.modeSpecificContent.innerHTML = '<p class="info-message">Cần ít nhất 4 từ để bắt đầu chế độ Trắc Nghiệm.</p>';
+        hideFooterControls();
         return;
     }
     
     let tempSet = state.settings.shuffleVerbs ? shuffleArray([...state.allPhrasalVerbs]) : [...state.allPhrasalVerbs];
     setCurrentLearningSet(tempSet.slice(0, Math.min(state.allPhrasalVerbs.length, sessionSize)));
+    
+    // SỬA LỖI: Kiểm tra xem có từ nào được chọn không
+    if (state.currentLearningSet.length === 0) {
+        dom.modeSpecificContent.innerHTML = '<p class="info-message">Không có từ nào phù hợp để bắt đầu vòng chơi này.</p>';
+        hideFooterControls();
+        return;
+    }
+
     resetScore();
     
     hideFooterControls();
-    dom.scoreArea.style.display = "flex"; // Sửa thành flex để căn giữa
+    dom.scoreArea.style.display = "flex"; // Sửa lại thành flex cho đúng với CSS
     updateScoreInFooter();
     displayGeneralQuizQuestion();
 }
