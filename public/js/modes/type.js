@@ -5,7 +5,6 @@ import { saveProgress } from '../storage.js';
 import { updateModeTitle, hideFooterControls, showSessionEndSummary, updateScoreInFooter, setActiveNavButton, setActiveMobileNavButton } from '../ui.js';
 
 function handleGeneralTypeSubmission(questionData) {
-    // SỬA LỖI: Tìm các phần tử bên trong `modeSpecificContent`
     const inputEl = dom.modeSpecificContent.querySelector("#type-ans-in");
     const subBtn = dom.modeSpecificContent.querySelector("#sub-type-ans");
     const nextBtn = dom.modeSpecificContent.querySelector("#next-q-btn");
@@ -21,6 +20,7 @@ function handleGeneralTypeSubmission(questionData) {
     nextBtn.style.display = "inline-flex";
     nextBtn.focus();
     nextBtn.onclick = () => {
+        // SỬA LỖI: Luôn tăng biến đếm câu hỏi đã trả lời ở đây
         incrementAnswered();
         displayGeneralTypeQuestion();
     };
@@ -59,7 +59,6 @@ function displayGeneralTypeQuestion() {
     
     dom.feedbackArea.textContent = `Câu ${state.questionsAnsweredInSession + 1}/${state.currentLearningSet.length}`;
     
-    // Gắn event listener vào các nút và input vừa được tạo
     const inputEl = dom.modeSpecificContent.querySelector("#type-ans-in");
     const subBtn = dom.modeSpecificContent.querySelector("#sub-type-ans");
     const handler = () => handleGeneralTypeSubmission(qData);
@@ -92,19 +91,13 @@ export function initTypeMode(sessionSize = 10) {
     }
 
     let tempSet = state.settings.shuffleVerbs ? shuffleArray([...state.allPhrasalVerbs]) : [...state.allPhrasalVerbs];
+    // SỬA LỖI: Đơn giản hóa logic, chỉ cần cắt mảng là đủ
     setCurrentLearningSet(tempSet.slice(0, Math.min(state.allPhrasalVerbs.length, sessionSize)));
-
-    // SỬA LỖI: Kiểm tra xem có từ nào được chọn không
-    if (state.currentLearningSet.length === 0) {
-        dom.modeSpecificContent.innerHTML = '<p class="info-message">Không có từ nào phù hợp để bắt đầu vòng chơi này.</p>';
-        hideFooterControls();
-        return;
-    }
 
     resetScore();
     
     hideFooterControls();
-    dom.scoreArea.style.display = "flex"; // Sửa lại thành flex cho đúng với CSS
+    dom.scoreArea.style.display = "flex";
     updateScoreInFooter();
     displayGeneralTypeQuestion();
 }
