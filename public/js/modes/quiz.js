@@ -45,6 +45,8 @@ function handleGeneralQuizChoice(selectedLi, qData) {
 }
 
 function displayGeneralQuizQuestion() {
+    // SỬA LỖI: Di chuyển `incrementAnswered` vào trong `nextBtn.onclick`
+    // Logic ở đây giữ nguyên, chỉ kiểm tra khi bắt đầu
     if (state.questionsAnsweredInSession >= state.currentLearningSet.length) {
         showSessionEndSummary("Trắc Nghiệm", state.score, state.currentLearningSet.length, initQuizMode);
         return;
@@ -84,7 +86,6 @@ function displayGeneralQuizQuestion() {
     });
 }
 
-// SỬA LỖI: Thêm "export"
 export function initQuizMode(sessionSize = 10) {
     setCurrentMode("quiz");
     setActiveNavButton(dom.startQuizModeBtn);
@@ -101,12 +102,18 @@ export function initQuizMode(sessionSize = 10) {
     }
     
     let tempSet = state.settings.shuffleVerbs ? shuffleArray([...state.allPhrasalVerbs]) : [...state.allPhrasalVerbs];
-    setCurrentLearningSet(tempSet.slice(0, Math.min(state.allPhrasalVerbs.length, sessionSize)));
+    const learningSet = tempSet.slice(0, Math.min(state.allPhrasalVerbs.length, sessionSize));
+    setCurrentLearningSet(learningSet);
     
-    resetScore();
-    
-    hideFooterControls();
-    dom.scoreArea.style.display = "flex";
-    updateScoreInFooter();
-    displayGeneralQuizQuestion();
+    // SỬA LỖI: Chỉ reset score và bắt đầu nếu learningSet thực sự có item
+    if (learningSet.length > 0) {
+        resetScore();
+        hideFooterControls();
+        dom.scoreArea.style.display = "flex";
+        updateScoreInFooter();
+        displayGeneralQuizQuestion();
+    } else {
+        dom.modeSpecificContent.innerHTML = '<p class="info-message">Không có từ nào để bắt đầu vòng chơi này.</p>';
+        hideFooterControls();
+    }
 }

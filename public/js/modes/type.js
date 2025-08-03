@@ -74,7 +74,6 @@ function displayGeneralTypeQuestion() {
     }
 }
 
-// SỬA LỖI: Thêm "export"
 export function initTypeMode(sessionSize = 10) {
     setCurrentMode("type");
     setActiveNavButton(dom.startTypeModeBtn);
@@ -91,12 +90,18 @@ export function initTypeMode(sessionSize = 10) {
     }
 
     let tempSet = state.settings.shuffleVerbs ? shuffleArray([...state.allPhrasalVerbs]) : [...state.allPhrasalVerbs];
-    setCurrentLearningSet(tempSet.slice(0, Math.min(state.allPhrasalVerbs.length, sessionSize)));
-
-    resetScore();
+    const learningSet = tempSet.slice(0, Math.min(state.allPhrasalVerbs.length, sessionSize));
+    setCurrentLearningSet(learningSet);
     
-    hideFooterControls();
-    dom.scoreArea.style.display = "flex";
-    updateScoreInFooter();
-    displayGeneralTypeQuestion();
+    // SỬA LỖI: Chỉ reset score và bắt đầu nếu learningSet thực sự có item
+    if (learningSet.length > 0) {
+        resetScore();
+        hideFooterControls();
+        dom.scoreArea.style.display = "flex";
+        updateScoreInFooter();
+        displayGeneralTypeQuestion();
+    } else {
+        dom.modeSpecificContent.innerHTML = '<p class="info-message">Không có từ nào để bắt đầu vòng chơi này.</p>';
+        hideFooterControls();
+    }
 }
