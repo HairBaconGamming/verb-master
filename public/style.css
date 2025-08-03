@@ -2527,6 +2527,7 @@ button:disabled,
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.9em;
+    color: var(--text-color);
     transition: background-color 0.2s, color 0.2s;
 }
 .filter-btn-group button.active {
