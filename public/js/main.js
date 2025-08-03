@@ -1,7 +1,7 @@
 import { dom } from './dom.js';
 import { state, updateSettings } from './state.js';
 import { initializeVerbsData, loadAppSettings, saveAppSettings, saveProgress, resetProgress } from './storage.js';
-import { displayWelcomeMessage, updateProgressSummary, loadThemePreference, handleThemeToggle } from './ui.js';
+import { displayWelcomeMessage, updateProgressSummary, loadThemePreference, handleThemeToggle, showToast } from './ui.js';
 import { initFlashcardMode, navigateFlashcardPrev, navigateFlashcardNext } from './modes/flashcard.js';
 import { initQuizMode } from './modes/quiz.js';
 import { initTypeMode } from './modes/type.js';
@@ -9,6 +9,7 @@ import { initTestSettings, startNewTest } from './modes/test.js';
 import { initAdvancedStatsMode } from './modes/stats.js';
 import { initSmartLearnMode } from './modes/smartlearn.js';
 import { initAiPracticeMode } from './modes/aiPractice.js';
+import { speak } from './speech.js'; // THÊM MỚI
 
 async function initializeApp() {
     loadThemePreference();
@@ -45,8 +46,9 @@ function setupEventListeners() {
     // Data Controls
     dom.saveProgressBtn.addEventListener('click', saveProgress);
     dom.loadProgressBtn.addEventListener('click', async () => {
-        await initializeVerbsData(); // Reloads data from localStorage
-        displayWelcomeMessage(); // Show welcome screen after loading
+        await initializeVerbsData();
+        displayWelcomeMessage();
+        showToast("Tải tiến độ thành công!", "success");
     });
     dom.resetProgressBtn.addEventListener('click', () => {
         if (confirm("Bạn có chắc chắn muốn reset toàn bộ tiến độ học tập không?")) {
@@ -64,10 +66,12 @@ function setupEventListeners() {
         if (event.target === dom.testSettingsModal) dom.testSettingsModal.classList.remove('show-modal');
     });
     dom.generateTestBtn.addEventListener('click', startNewTest);
-    dom.shuffleVerbsToggle.addEventListener('change', (event) => {
-        updateSettings({ shuffleVerbs: event.target.checked });
-        saveAppSettings();
-    });
+    if(dom.shuffleVerbsToggle) {
+        dom.shuffleVerbsToggle.addEventListener('change', (event) => {
+            updateSettings({ shuffleVerbs: event.target.checked });
+            saveAppSettings();
+        });
+    }
 
     // Flashcard Navigation
     dom.prevCardBtn.addEventListener('click', navigateFlashcardPrev);
@@ -81,7 +85,6 @@ function setupEventListeners() {
         icon.className = isOpen ? 'fas fa-times' : 'fas fa-cog';
     });
 
-    // Close mobile menu when a nav item is clicked
     dom.sidebarEl.querySelectorAll(".sidebar-main-content .nav-btn, .sidebar-main-content .data-controls-sidebar button").forEach(btn => {
         btn.addEventListener('click', () => {
              if (dom.sidebarEl.classList.contains("mobile-settings-open")) {
@@ -90,7 +93,85 @@ function setupEventListeners() {
              }
         });
     });
+
+    // ==================== THÊM MỚI: EVENT LISTENERS CHO TÍNH NĂNG MỚI ====================
+    setupSearch();
+    setupKeyboardShortcuts();
+    // ==================== KẾT THÚC THÊM MỚI ====================
 }
 
-// Start the application
+// ==================== THÊM MỚI: CÁC HÀM CHO TÍNH NĂNG MỚI ====================
+
+function setupSearch() {
+    const searchInput = document.getElementById('verbSearchInput');
+    const resultsContainer = document.getElementById('searchResultsContainer');
+
+    if (!searchInput || !resultsContainer) return;
+
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        if (query.length < 2) {
+            resultsContainer.classList.remove('show');
+            return;
+        }
+
+        const results = state.allPhrasalVerbs.filter(verb => 
+            verb.term.toLowerCase().includes(query) || verb.definition.toLowerCase().includes(query)
+        ).slice(0, 10); // Giới hạn 10 kết quả
+
+        resultsContainer.innerHTML = ''; // Xóa kết quả cũ
+        if (results.length > 0) {
+            results.forEach(verb => {
+                const item = document.createElement('div');
+                item.className = 'search-result-item';
+                item.innerHTML = `<strong>${verb.term}</strong><span>${verb.definition}</span>`;
+                item.addEventListener('click', () => {
+                    // Hiển thị toast với thông tin chi tiết
+                    showToast(`<strong>${verb.term}:</strong> ${verb.definition}<br><em>e.g., ${verb.example || 'Không có ví dụ'}</em>`, 'info');
+                    searchInput.value = '';
+                    resultsContainer.classList.remove('show');
+                });
+                resultsContainer.appendChild(item);
+            });
+        } else {
+            resultsContainer.innerHTML = '<div class="no-results">Không tìm thấy kết quả.</div>';
+        }
+        resultsContainer.classList.add('show');
+    });
+
+    // Ẩn kết quả khi click ra ngoài
+    document.addEventListener('click', (e) => {
+        if (!dom.sidebarEl.contains(e.target)) {
+            resultsContainer.classList.remove('show');
+        }
+    });
+}
+
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+        // Bỏ qua nếu đang gõ trong ô input
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            return;
+        }
+
+        // Phím tắt cho Flashcard
+        if (state.currentMode === 'flashcard') {
+            if (e.key === 'ArrowRight') navigateFlashcardNext();
+            if (e.key === 'ArrowLeft') navigateFlashcardPrev();
+        }
+        
+        // Phím tắt cho việc chọn đáp án trắc nghiệm
+        if ((state.currentMode === 'quiz' || state.currentMode === 'test' || state.currentMode === 'smartlearn') && ['1', '2', '3', '4'].includes(e.key)) {
+            const options = dom.modeSpecificContent.querySelectorAll('.options-list li:not(.disabled)');
+            const index = parseInt(e.key) - 1;
+            if (options && options[index]) {
+                options[index].click();
+            }
+        }
+    });
+}
+// ==================== KẾT THÚC THÊM MỚI ====================
+
+
+// Bắt đầu ứng dụng
 document.addEventListener("DOMContentLoaded", initializeApp);

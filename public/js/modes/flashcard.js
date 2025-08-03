@@ -4,6 +4,7 @@ import { shuffleArray } from '../utils.js';
 import { saveProgress } from '../storage.js';
 import { updateModeTitle, hideFooterControls, setActiveNavButton, setActiveMobileNavButton } from '../ui.js';
 import { MASTERY_LEVELS } from '../constants.js';
+import { speak } from '../speech.js'; // THÊM MỚI
 
 function displayFlashcard() {
     if (state.currentIndex >= state.currentLearningSet.length) {
@@ -12,10 +13,19 @@ function displayFlashcard() {
         return;
     }
     const verb = state.currentLearningSet[state.currentIndex];
+    // THÊM NÚT AUDIO VÀO CẢ MẶT TRƯỚC VÀ MẶT SAU
     dom.modeSpecificContent.innerHTML = `
         <div class="flashcard-container"><div class="flashcard" id="current-flashcard" tabindex="0">
-            <div class="front"><p class="flashcard-term">${verb.term}</p>${verb.example ? `<p class="flashcard-example"><em>e.g., ${verb.example}</em></p>` : ''}</div>
-            <div class="back"><p class="flashcard-definition">${verb.definition}</p></div>
+            <div class="front">
+                <button class="audio-button" data-text="${verb.definition}" aria-label="Phát âm"><i class="fas fa-volume-up"></i></button>
+                <p class="flashcard-term">${verb.term}</p>
+                ${verb.example ? `<p class="flashcard-example"><em>e.g., ${verb.example}</em></p>` : ''}
+            </div>
+            <div class="back">
+                <button class="audio-button" data-text="${verb.definition}" aria-label="Phát âm"><i class="fas fa-volume-up"></i></button>
+                <p class="flashcard-definition">${verb.definition}</p>
+                 ${verb.example ? `<button class="audio-button" style="top:auto; bottom: 15px;" data-text="${verb.example}" aria-label="Phát âm ví dụ"><i class="fas fa-comment-dots"></i></button>`:''}
+            </div>
         </div></div>
         <div class="flashcard-actions">
             <button id="fc-mark-incorrect" class="action-button danger-btn"><i class="fas fa-times-circle"></i> Chưa biết</button>
@@ -29,6 +39,17 @@ function displayFlashcard() {
             fcEl.classList.toggle("flipped");
             e.preventDefault();
         }
+    });
+
+    // Gắn sự kiện cho các nút audio
+    dom.modeSpecificContent.querySelectorAll('.audio-button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Ngăn việc lật thẻ khi bấm nút loa
+            const textToSpeak = e.currentTarget.dataset.text;
+            if (textToSpeak) {
+                speak(textToSpeak, 'en-US');
+            }
+        });
     });
 
     dom.modeSpecificContent.querySelector("#fc-mark-correct").onclick = () => handleFlashcardMarkSimple(true);
@@ -66,7 +87,6 @@ function updateFlashcardNavUI() {
     dom.cardNumberDisplay.textContent = `${state.currentIndex + 1} / ${state.currentLearningSet.length}`;
 }
 
-// SỬA LỖI: Thêm "export"
 export function navigateFlashcardPrev() {
     if (state.currentMode === "flashcard" && state.currentIndex > 0) {
         setCurrentIndex(state.currentIndex - 1);
@@ -74,7 +94,6 @@ export function navigateFlashcardPrev() {
     }
 }
 
-// SỬA LỖI: Thêm "export"
 export function navigateFlashcardNext() {
     if (state.currentMode === "flashcard" && state.currentIndex < state.currentLearningSet.length - 1) {
         setCurrentIndex(state.currentIndex + 1);
@@ -85,7 +104,6 @@ export function navigateFlashcardNext() {
     }
 }
 
-// SỬA LỖI: Thêm "export"
 export function initFlashcardMode() {
     setCurrentMode("flashcard");
     setActiveNavButton(dom.startFlashcardModeBtn);
