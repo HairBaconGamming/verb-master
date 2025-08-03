@@ -9,6 +9,7 @@ import { initTestSettings, startNewTest } from './modes/test.js';
 import { initAdvancedStatsMode } from './modes/stats.js';
 import { initSmartLearnMode } from './modes/smartlearn.js';
 import { initAiPracticeMode } from './modes/aiPractice.js';
+import { initExplorerMode } from './modes/explorer.js';
 import { speak } from './speech.js'; // THÊM MỚI
 
 async function initializeApp() {
@@ -27,6 +28,7 @@ async function initializeApp() {
 function setupEventListeners() {
     // Desktop Sidebar Buttons
     dom.startSmartLearnModeBtn.addEventListener('click', initSmartLearnMode);
+    dom.startExplorerModeBtn.addEventListener('click', initExplorerMode);
     dom.startFlashcardModeBtn.addEventListener('click', initFlashcardMode);
     dom.startQuizModeBtn.addEventListener('click', initQuizMode);
     dom.startTypeModeBtn.addEventListener('click', initTypeMode);
@@ -36,6 +38,7 @@ function setupEventListeners() {
 
     // Mobile Buttons
     dom.startSmartLearnModeBtnMobile.addEventListener('click', initSmartLearnMode);
+    dom.startExplorerModeBtnMobile.addEventListener('click', initExplorerMode);
     dom.startFlashcardModeBtnMobile.addEventListener('click', initFlashcardMode);
     dom.startQuizModeBtnMobile.addEventListener('click', initQuizMode);
     dom.startTypeModeBtnMobile.addEventListener('click', initTypeMode);

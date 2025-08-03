@@ -2463,6 +2463,188 @@ button:disabled,
     color: var(--primary-color); /* Đổi màu icon khi hover */
 }
 
+/* =================================== */
+/* === CSS CHO CHẾ ĐỘ VERB EXPLORER === */
+/* =================================== */
+
+.verb-explorer-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.explorer-controls {
+  background-color: var(--card-background-color);
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.explorer-search-wrapper {
+  flex-grow: 1;
+  position: relative;
+  min-width: 200px;
+}
+
+#explorer-search-input {
+  width: 100%;
+  padding: 10px 15px 10px 35px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.explorer-search-wrapper .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--light-text-color);
+}
+
+.filter-group, .sort-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.filter-group label, .sort-group label {
+    font-weight: 500;
+    font-size: 0.9em;
+    color: var(--light-text-color);
+}
+.filter-btn-group button {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s, color 0.2s;
+}
+.filter-btn-group button.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+#explorer-sort-select {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-background-color);
+    color: var(--text-color);
+}
+
+#verb-list-container {
+  background-color: var(--card-background-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  overflow: hidden; /* Để bo góc hoạt động với item con */
+}
+
+.verb-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+  gap: 15px;
+}
+.verb-item:last-child {
+  border-bottom: none;
+}
+
+.mastery-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.mastery-indicator.new { background-color: var(--chart-light-new-bg); border: 1px solid #ccc; }
+.mastery-indicator.learning { background-color: var(--chart-light-learning2-bg); }
+.mastery-indicator.mastered { background-color: var(--chart-light-mastered-bg); }
+
+[data-theme="dark"] .mastery-indicator.new { background-color: var(--chart-dark-new-bg); border-color: #555; }
+[data-theme="dark"] .mastery-indicator.learning { background-color: var(--chart-dark-learning2-bg); }
+[data-theme="dark"] .mastery-indicator.mastered { background-color: var(--chart-dark-mastered-bg); }
+
+.verb-info {
+  flex-grow: 1;
+}
+.verb-info .term-def {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+.verb-info .term-def span {
+  font-weight: 400;
+  color: var(--text-color);
+}
+.verb-info .example {
+  font-size: 0.9em;
+  color: var(--light-text-color);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.verb-actions {
+  display: flex;
+  gap: 10px;
+}
+.verb-actions .action-icon-btn {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--light-text-color);
+  font-size: 1.1em;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.verb-actions .action-icon-btn:hover {
+  color: var(--primary-color);
+  background-color: var(--background-color);
+  border-color: var(--border-color);
+}
+
+#list-status-message {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--light-text-color);
+    font-style: italic;
+}
+
+/* Quick Review Modal Styling */
+#quick-review-modal-content .flashcard-container {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+#quick-review-modal-content .flashcard {
+    height: 180px;
+    font-size: 1.2em;
+}
+
+#quick-review-modal-content .feedback-message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+#quick-review-modal-content .feedback-message.correct {
+    background-color: rgba(var(--rgb-success-color), 0.1);
+    color: var(--success-color);
+}
+#quick-review-modal-content .feedback-message.incorrect {
+    background-color: rgba(var(--rgb-error-color), 0.1);
+    color: var(--error-color);
+}
+
 /* Responsive adjustments */
 @media (max-width: 992px) {
   /* Tablet and smaller */

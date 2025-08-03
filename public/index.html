@@ -107,6 +107,11 @@
             >
               <i class="fas fa-brain"></i><span>Học Thông Minh</span>
             </button>
+            <!-- ==================== THÊM NÚT MỚI VÀO ĐÂY ==================== -->
+            <button id="startExplorerModeBtn" class="nav-btn" data-tooltip="Tra cứu, lọc và xem toàn bộ danh sách từ">
+                <i class="fas fa-book-open"></i><span>Khám Phá</span>
+            </button>
+            <!-- ==================== KẾT THÚC THÊM MỚI ==================== -->
             <button
               id="startFlashcardModeBtn"
               class="nav-btn"
@@ -200,6 +205,9 @@
           <div class="mobile-mode-selection" style="display: none">
             <button id="startSmartLearnModeBtnMobile" class="mode-btn-mobile">
               <i class="fas fa-brain"></i><span>Học Thông Minh</span>
+            </button>
+            <button id="startExplorerModeBtnMobile" class="mode-btn-mobile">
+                <i class="fas fa-book-open"></i><span>Khám Phá</span>
             </button>
             <button id="startFlashcardModeBtnMobile" class="mode-btn-mobile">
               <i class="fas fa-clone"></i><span>Flashcards</span>
@@ -324,6 +332,14 @@
             </button>
           </div>
         </div>
+
+        <!-- ==================== THÊM MỚI: MODAL ÔN TẬP NHANH ==================== -->
+        <div id="quick-review-modal" class="modal" role="dialog" aria-labelledby="quickReviewModalTitle" aria-modal="true">
+          <div class="modal-content stylish-modal" id="quick-review-modal-content">
+            <!-- Nội dung sẽ được render bằng JavaScript -->
+          </div>
+        </div>
+        <!-- ==================== KẾT THÚC THÊM MỚI ==================== -->
 
         <footer class="main-footer">
           <div id="navigation-controls" class="navigation-controls-footer">
