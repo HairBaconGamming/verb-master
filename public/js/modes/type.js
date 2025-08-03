@@ -5,7 +5,7 @@ import { saveProgress } from '../storage.js';
 import { updateModeTitle, hideFooterControls, showSessionEndSummary, updateScoreInFooter, setActiveNavButton, setActiveMobileNavButton } from '../ui.js';
 
 function handleGeneralTypeSubmission(questionData) {
-    const inputEl = dom.modeSpecificContent.querySelector("#type-ans-in"); // Sửa thành querySelector
+    const inputEl = document.getElementById("type-ans-in");
     if (!inputEl) return;
 
     const userAnswer = inputEl.value;
@@ -13,8 +13,8 @@ function handleGeneralTypeSubmission(questionData) {
     const isCorrect = normalizeAndCompareAnswers(userAnswer, correctAnswerString);
 
     inputEl.disabled = true;
-    dom.modeSpecificContent.querySelector("#sub-type-ans").style.display = "none";
-    const nextBtn = dom.modeSpecificContent.querySelector("#next-q-btn");
+    document.getElementById("sub-type-ans").style.display = "none";
+    const nextBtn = document.getElementById("next-q-btn");
     
     if (nextBtn) {
         nextBtn.style.display = "inline-flex";
@@ -45,8 +45,7 @@ function handleGeneralTypeSubmission(questionData) {
 
 function displayGeneralTypeQuestion() {
     if (state.questionsAnsweredInSession >= state.currentLearningSet.length) {
-        // SỬA LỖI: Truyền initTypeMode vào làm callback
-        showSessionEndSummary("Tự Luận", state.score, state.currentLearningSet.length, initTypeMode);
+        showSessionEndSummary("Tự Luận", state.score, state.currentLearningSet.length);
         return;
     }
     const qData = state.currentLearningSet[state.questionsAnsweredInSession];
@@ -60,9 +59,9 @@ function displayGeneralTypeQuestion() {
     
     dom.feedbackArea.textContent = `Câu ${state.questionsAnsweredInSession + 1}/${state.currentLearningSet.length}`;
     
-    const inputEl = dom.modeSpecificContent.querySelector("#type-ans-in");
+    const inputEl = document.getElementById("type-ans-in");
     inputEl.focus();
-    const subBtn = dom.modeSpecificContent.querySelector("#sub-type-ans");
+    const subBtn = document.getElementById("sub-type-ans");
     const handler = () => handleGeneralTypeSubmission(qData);
 
     subBtn.addEventListener("click", handler);
@@ -93,7 +92,7 @@ export function initTypeMode(sessionSize = 10) {
     resetScore();
     
     hideFooterControls();
-    dom.scoreArea.style.display = "flex"; // Sửa thành flex
+    dom.scoreArea.style.display = "block";
     updateScoreInFooter();
     displayGeneralTypeQuestion();
 }

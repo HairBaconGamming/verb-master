@@ -19,18 +19,18 @@ function handleGeneralQuizChoice(selectedLi, qData) {
         incrementScore();
         dom.feedbackArea.textContent = "Chính xác!";
         dom.feedbackArea.className = "feedback-area-footer correct";
-        qData.totalCorrect = (qData.totalCorrect || 0) + 1;
+        qData.totalCorrect++;
     } else {
         dom.feedbackArea.textContent = `Sai! Đúng là: ${correctAns}`;
         dom.feedbackArea.className = "feedback-area-footer incorrect";
-        qData.totalIncorrect = (qData.totalIncorrect || 0) + 1;
+        qData.totalIncorrect++;
     }
     
     qData.lastReviewed = Date.now();
     saveProgress();
     updateScoreInFooter();
     
-    const nextBtn = dom.modeSpecificContent.querySelector("#next-q-btn");
+    const nextBtn = dom.modeSpecificContent.querySelector("#next-q-btn"); // Sửa thành querySelector
     if (nextBtn) {
         nextBtn.style.display = "inline-flex";
         nextBtn.focus();
@@ -43,6 +43,7 @@ function handleGeneralQuizChoice(selectedLi, qData) {
 
 function displayGeneralQuizQuestion() {
     if (state.questionsAnsweredInSession >= state.currentLearningSet.length) {
+        // SỬA LỖI: Truyền initQuizMode vào làm callback
         showSessionEndSummary("Trắc Nghiệm", state.score, state.currentLearningSet.length, initQuizMode);
         return;
     }
@@ -85,7 +86,7 @@ export function initQuizMode(sessionSize = 10) {
     setCurrentMode("quiz");
     setActiveNavButton(dom.startQuizModeBtn);
     setActiveMobileNavButton(dom.startQuizModeBtnMobile);
-    updateModeTitle('<i class="fas fa-list-check"></i> Trắc Nghiệm');
+    updateModeTitle('<i class="fQas fa-list-check"></i> Trắc Nghiệm');
     
     if (dom.welcomeMessageContainer) dom.welcomeMessageContainer.style.display = 'none';
     if (dom.modeSpecificContent) dom.modeSpecificContent.style.display = 'block';
@@ -100,7 +101,7 @@ export function initQuizMode(sessionSize = 10) {
     resetScore();
     
     hideFooterControls();
-    dom.scoreArea.style.display = "flex"; // Sửa thành flex
+    dom.scoreArea.style.display = "flex"; // Sửa thành flex để căn giữa
     updateScoreInFooter();
     displayGeneralQuizQuestion();
 }
