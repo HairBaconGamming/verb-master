@@ -1,14 +1,18 @@
 {
-  "name": "phrasal-verb-quiz",
-  "version": "1.0.0",
-  "description": "A Quizlet-like app to learn phrasal verbs.",
+  "name": "verbmaster-upgraded",
+  "version": "2.0.0",
+  "description": "A Quizlet-like app to learn phrasal verbs with user accounts.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.3"
   },
   "engines": {
     "node": "16.x"
@@ -16,8 +20,10 @@
   "keywords": [
     "phrasal verbs",
     "quiz",
-    "learning"
+    "learning",
+    "nodejs",
+    "mongodb"
   ],
-  "author": "DADDY",
+  "author": "Saygex69 & Gemini",
   "license": "MIT"
 }
