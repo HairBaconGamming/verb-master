@@ -2439,6 +2439,30 @@ button:disabled,
   font-style: italic;
 }
 
+/* === CSS BỔ SUNG CHO TÍNH NĂNG TÌM KIẾM NÂNG CAO === */
+
+.search-result-item {
+  display: flex;            /* Sắp xếp nội dung và icon theo hàng ngang */
+  justify-content: space-between; /* Đẩy icon sang phải */
+  align-items: center;      /* Căn giữa theo chiều dọc */
+}
+
+.search-result-item div {
+  /* Bọc text vào một div để không bị ảnh hưởng bởi flex */
+  flex-grow: 1;
+}
+
+.external-link-icon {
+  color: var(--light-text-color);
+  font-size: 0.8em;
+  margin-left: 10px;        /* Tạo khoảng cách với text */
+  flex-shrink: 0;           /* Ngăn icon bị co lại */
+}
+
+.search-result-item:hover .external-link-icon {
+    color: var(--primary-color); /* Đổi màu icon khi hover */
+}
+
 /* Responsive adjustments */
 @media (max-width: 992px) {
   /* Tablet and smaller */

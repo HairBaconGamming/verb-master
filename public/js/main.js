@@ -102,6 +102,7 @@ function setupEventListeners() {
 
 // ==================== THÊM MỚI: CÁC HÀM CHO TÍNH NĂNG MỚI ====================
 
+// ==================== BẮT ĐẦU THAY THẾ HÀM NÀY ====================
 function setupSearch() {
     const searchInput = document.getElementById('verbSearchInput');
     const resultsContainer = document.getElementById('searchResultsContainer');
@@ -117,17 +118,35 @@ function setupSearch() {
 
         const results = state.allPhrasalVerbs.filter(verb => 
             verb.term.toLowerCase().includes(query) || verb.definition.toLowerCase().includes(query)
-        ).slice(0, 10); // Giới hạn 10 kết quả
+        ).slice(0, 10);
 
-        resultsContainer.innerHTML = ''; // Xóa kết quả cũ
+        resultsContainer.innerHTML = '';
         if (results.length > 0) {
             results.forEach(verb => {
                 const item = document.createElement('div');
                 item.className = 'search-result-item';
-                item.innerHTML = `<strong>${verb.term}</strong><span>${verb.definition}</span>`;
+                // THAY ĐỔI: Thêm icon và cấu trúc div để style flexbox
+                item.innerHTML = `
+                    <div>
+                        <strong>${verb.term}</strong>
+                        <span>${verb.definition}</span>
+                    </div>
+                    <i class="fas fa-external-link-alt external-link-icon"></i>
+                `;
+                
+                // THAY ĐỔI: Sự kiện click giờ sẽ mở tab mới
                 item.addEventListener('click', () => {
-                    // Hiển thị toast với thông tin chi tiết
-                    showToast(`<strong>${verb.term}:</strong> ${verb.definition}<br><em>e.g., ${verb.example || 'Không có ví dụ'}</em>`, 'info');
+                    // Lấy phần tiếng Anh của cụm động từ (chỉ lấy phần đầu tiên nếu có dấu '/')
+                    const phrasalVerbToSearch = verb.definition.split(' / ')[0].trim();
+                    
+                    // Chuyển đổi khoảng trắng thành dấu gạch nối cho URL
+                    const formattedVerb = phrasalVerbToSearch.toLowerCase().replace(/ /g, '-');
+                    
+                    // Tạo URL và mở tab mới
+                    const url = `https://dictionary.cambridge.org/vi/dictionary/english/${formattedVerb}`;
+                    window.open(url, '_blank');
+                    
+                    // Dọn dẹp giao diện
                     searchInput.value = '';
                     resultsContainer.classList.remove('show');
                 });
@@ -139,13 +158,13 @@ function setupSearch() {
         resultsContainer.classList.add('show');
     });
 
-    // Ẩn kết quả khi click ra ngoài
     document.addEventListener('click', (e) => {
         if (!dom.sidebarEl.contains(e.target)) {
             resultsContainer.classList.remove('show');
         }
     });
 }
+// ==================== KẾT THÚC THAY THẾ HÀM NÀY ====================
 
 function setupKeyboardShortcuts() {
     document.addEventListener('keydown', (e) => {
